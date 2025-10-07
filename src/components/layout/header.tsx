@@ -178,12 +178,16 @@ const Header = () => {
 
             {/* CTA Buttons */}
             <div className="hidden lg:flex items-center space-x-2">
+              <Link href="/research">
               <Button variant="outline" size="sm">
-                Apply Now
+                Research
               </Button>
-              <Button variant="medical" size="sm">
-                View Research
-              </Button>
+              </Link>
+              <Link href="/portal">
+                <Button variant="outline" size="sm" className="bg-blue-600 text-white border-blue-600 hover:bg-blue-700">
+                  Student Portal
+                </Button>
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
@@ -232,14 +236,16 @@ const Header = () => {
               <Link href="/news-media" className="block py-2 text-lg font-medium text-gray-900 dark:text-gray-100">
                 News & Media
               </Link>
-              <div className="flex space-x-4 pt-4">
-                <Button variant="outline" className="flex-1">
-                  Apply Now
-                </Button>
+              <div className="flex space-x-2 pt-4">
                 <Button variant="medical" className="flex-1">
                   View Research
                 </Button>
               </div>
+              <Link href="/portal">
+                <Button variant="outline" className="w-full bg-green-600 text-white border-green-600 hover:bg-blue-700">
+                  Student Portal
+                </Button>
+              </Link>
             </div>
           </div>
         )}

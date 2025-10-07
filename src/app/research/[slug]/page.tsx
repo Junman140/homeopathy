@@ -98,9 +98,10 @@ async function getRelatedPublications(type: string, currentId: string): Promise<
   }
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const publication = await getPublication(params.slug)
-  const study = await getResearchStudy(params.slug)
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const publication = await getPublication(slug)
+  const study = await getResearchStudy(slug)
   
   const article = publication || study
   if (!article) {
@@ -121,9 +122,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-export default async function ResearchArticlePage({ params }: { params: { slug: string } }) {
-  const publication = await getPublication(params.slug)
-  const study = await getResearchStudy(params.slug)
+export default async function ResearchArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const publication = await getPublication(slug)
+  const study = await getResearchStudy(slug)
   
   const article = publication || study
   if (!article) {

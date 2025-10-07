@@ -6,12 +6,20 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { name, email, phone, subject, message } = body
 
+    // Validate required fields
+    if (!name || !email || !message) {
+      return NextResponse.json(
+        { error: 'Name, email, and message are required' },
+        { status: 400 }
+      )
+    }
+
     const contactMessage = await prisma.contactMessage.create({
       data: {
         name,
         email,
-        phone,
-        subject,
+        phone: phone || null,
+        subject: subject || 'general',
         message
       }
     })

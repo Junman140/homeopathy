@@ -493,7 +493,7 @@ export default async function HomePage() {
               </div>
 
               <div className="mt-6 sm:mt-8">
-                <Link href="/clinic/services">
+                <Link href="/contact-us">
                   <Button size="lg" variant="medical" className="w-full sm:w-auto">
                     View All Services
                     <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -514,7 +514,7 @@ export default async function HomePage() {
                   ))}
                 </div>
                 <div className="mt-4 sm:mt-6">
-                  <Link href="/clinic/appointments">
+                  <Link href="/contact-us">
                     <Button size="lg" variant="healing" className="w-full">
                       Schedule Appointment
                     </Button>

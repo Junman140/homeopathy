@@ -1,0 +1,113 @@
+'use client'
+
+import Link from 'next/link'
+import { useState } from 'react'
+import PortalAuthModal from '@/components/portal-auth-modal'
+
+export default function PortalLanding() {
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
+
+  const slides = [
+    {
+      title: "Welcome to Our School",
+      subtitle: "Great Inventors are good student, be a good student."
+    },
+    {
+      title: "Welcome to Student Portal",
+      subtitle: "in MOCHAM, we make your dream become a reality, through our progressive framework"
+    },
+    {
+      title: "Postgraduate Excellence",
+      subtitle: "Advance your medical career with world-class education"
+    }
+  ]
+
+  return (
+    <div className="portal-landing">
+      <div className="portal-content">
+        {/* Header */}
+        <header className="portal-header">
+          <div className="portal-logo">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+              <circle cx="20" cy="20" r="18" fill="#10b981" stroke="white" strokeWidth="2"/>
+              <path d="M12 20l6 6 12-12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <h1 className="portal-title">POSTGRADUATE PORTAL</h1>
+            <p className="portal-subtitle">MOCHAM</p>
+          </div>
+        </header>
+
+        {/* Main Content */}
+        <main className="portal-main">
+          <div className="portal-dots">
+            {slides.map((_, index) => (
+              <div
+                key={index}
+                className={`portal-dot ${index === currentSlide ? 'active' : ''}`}
+                onClick={() => setCurrentSlide(index)}
+              />
+            ))}
+          </div>
+          
+          <div>
+            <h2 style={{ color: 'white', fontSize: '2rem', marginBottom: '1rem', fontWeight: 'bold' }}>
+              {slides[currentSlide].title}
+            </h2>
+            <p style={{ color: 'rgba(255, 255, 255, 0.9)', fontSize: '1.1rem', maxWidth: '600px' }}>
+              {slides[currentSlide].subtitle}
+            </p>
+          </div>
+
+          <button 
+            onClick={() => setIsAuthModalOpen(true)} 
+            className="portal-cta"
+          >
+            START NOW
+          </button>
+        </main>
+
+        {/* Footer */}
+        <footer className="portal-footer">
+          <div className="portal-contact">
+            <div>© POSTGRADUATE PORTAL 2025 All right reserved</div>
+            <div>
+              <a href="mailto:portal@mocham.edu">portal@mocham.edu</a> | 
+              <a href="tel:+2348023635890"> +2348023635890</a>
+            </div>
+            <div>
+              <a href="tel:+23481-552-12097">+23481-552-12097</a> | 
+              <a href="tel:+234806-598-4572">+234806-598-4572</a> | 
+              <a href="tel:+234802-2269-656">+234802-2269-656</a>
+            </div>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div style={{ 
+              width: '20px', 
+              height: '20px', 
+              background: '#10b981', 
+              borderRadius: '4px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+              fontWeight: 'bold',
+              fontSize: '12px'
+            }}>
+              M
+            </div>
+            <span>MOCHAM</span>
+          </div>
+        </footer>
+      </div>
+
+      {/* Authentication Modal */}
+      <PortalAuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
+      />
+    </div>
+  )
+}
