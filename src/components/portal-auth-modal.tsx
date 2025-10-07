@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { signIn, signUp, useSession } from '@/lib/auth-client'
+import { validateStudent, setPortalSession, getPortalSession } from '@/lib/portal-session'
 
 interface PortalAuthModalProps {
   isOpen: boolean
@@ -15,7 +15,6 @@ export default function PortalAuthModal({ isOpen, onClose }: PortalAuthModalProp
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const router = useRouter()
-  const { data: session } = useSession()
 
   const [loginForm, setLoginForm] = useState({
     email: '',
@@ -30,12 +29,14 @@ export default function PortalAuthModal({ isOpen, onClose }: PortalAuthModalProp
     qualifications: ''
   })
 
-  // Close modal and redirect if logged in
-  if (session) {
-    onClose()
-    router.push('/portal/dashboard')
-    return null
-  }
+  // Check if already logged in
+  useEffect(() => {
+    const session = getPortalSession()
+    if (session && isOpen) {
+      onClose()
+      router.push('/portal/dashboard')
+    }
+  }, [isOpen, onClose, router])
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -43,18 +44,12 @@ export default function PortalAuthModal({ isOpen, onClose }: PortalAuthModalProp
     setError('')
     
     try {
-      // For demo purposes, we'll use hardcoded test students
-      // In production, this would validate against the database
-      const testStudents = [
-        { email: 'john.doe@student.mocham.edu', regNumber: 'MOCHAM2024001', name: 'John Doe' },
-        { email: 'jane.smith@student.mocham.edu', regNumber: 'MOCHAM2024002', name: 'Jane Smith' }
-      ]
-      
-      const student = testStudents.find(s => 
-        s.email === loginForm.email && s.regNumber === loginForm.regNumber
-      )
+      // Validate student credentials
+      const student = validateStudent(loginForm.email, loginForm.regNumber)
       
       if (student) {
+        // Set session
+        setPortalSession(student)
         setSuccess('Login successful! Redirecting...')
         setTimeout(() => {
           onClose()

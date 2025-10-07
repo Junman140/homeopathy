@@ -1,22 +1,34 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useSession, signOut } from '@/lib/auth-client'
+import { getPortalSession, clearPortalSession, type PortalStudent } from '@/lib/portal-session'
 
 export default function PortalDashboard() {
   const [activeTab, setActiveTab] = useState('home')
   const [darkMode, setDarkMode] = useState(false)
-  const { data: session, isPending } = useSession()
+  const [student, setStudent] = useState<PortalStudent | null>(null)
+  const [loading, setLoading] = useState(true)
   const router = useRouter()
 
-  const handleLogout = async () => {
-    // For demo purposes, just redirect to portal landing page
+  useEffect(() => {
+    // Check for session on mount
+    const session = getPortalSession()
+    if (!session) {
+      router.push('/portal')
+    } else {
+      setStudent(session)
+    }
+    setLoading(false)
+  }, [router])
+
+  const handleLogout = () => {
+    clearPortalSession()
     router.push('/portal')
   }
 
-  if (isPending) {
+  if (loading) {
     return (
       <div className="portal-dashboard">
         <div className="portal-loading-container">
@@ -26,8 +38,7 @@ export default function PortalDashboard() {
     )
   }
 
-  if (!session) {
-    router.push('/portal/auth')
+  if (!student) {
     return null
   }
 
@@ -56,7 +67,7 @@ export default function PortalDashboard() {
           </div>
           
           <div className="portal-dashboard-user">
-            <span>Welcome, {(session.user as any).firstName || session.user.name || 'Student'}</span>
+            <span>Welcome, {student.firstName || student.name || 'Student'}</span>
             <button 
               className="portal-dark-mode-toggle"
               onClick={() => setDarkMode(!darkMode)}
@@ -130,13 +141,13 @@ export default function PortalDashboard() {
                   <span>👤</span>
                 </div>
                 <div className="portal-profile-info">
-                  <h2>{(session.user as any).firstName} {(session.user as any).lastName}</h2>
+                  <h2>{student.firstName} {student.lastName}</h2>
                   <p>Postgraduate Student</p>
-                  <p>MOCHAM - {(session.user as any).program || 'Homeopathic Medicine'}</p>
-                  <p>Student ID: {(session.user as any).studentId || 'Pending Assignment'}</p>
-                  <p>Email: {session.user.email}</p>
-                  {(session.user as any).phone && <p>Phone: {(session.user as any).phone}</p>}
-                  <p>Enrollment Status: {(session.user as any).enrollmentStatus || 'Pending'}</p>
+                  <p>MOCHAM - {student.program || 'Homeopathic Medicine'}</p>
+                  <p>Student ID: {student.studentId || 'Pending Assignment'}</p>
+                  <p>Email: {student.email}</p>
+                  {student.phone && <p>Phone: {student.phone}</p>}
+                  <p>Enrollment Status: {student.enrollmentStatus || 'Pending'}</p>
                 </div>
               </div>
             </div>
