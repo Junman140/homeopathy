@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=EB+Garamond:wght@400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 215 25% 27%; /* Deep dim blue instead of black */
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 27%; /* Deep dim blue */
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 27%; /* Deep dim blue */
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 215 25% 27%; /* Deep dim blue */
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 20% 55%; /* Lighter dim blue for muted text */
+    --accent: 210 40% 96%;
+    --accent-foreground: 215 25% 27%; /* Deep dim blue */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222 47% 11%; /* Dark blue-gray background */
+    --foreground: 210 40% 98%;
+    --card: 222 47% 14%; /* Slightly lighter card background */
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 14%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47% 11%;
+    --secondary: 217 32.6% 20%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 32.6% 20%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217 32.6% 20%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 32.6% 20%;
+    --input: 217 32.6% 20%;
+    --ring: 224.3 76.3% 94.1%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Helvetica Neue', 'Arial', 'Inter', sans-serif;
+    font-weight: 300; /* Light weight as preferred by UCSF */
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Garamond', 'EB Garamond', serif;
+    font-weight: 400; /* Roman weight as preferred by UCSF */
+  }
+}
+
+/* Clean UCSF-inspired styles */
+.ucsf-blue {
+  background-color: #0052cc;
+}
+
+.ucsf-blue-text {
+  color: #0052cc;
+}
+
+.clean-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

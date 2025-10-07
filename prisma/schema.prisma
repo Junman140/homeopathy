@@ -1,0 +1,351 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Academic Programs
+model Program {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  duration    String
+  type        String   // "degree", "diploma", "certificate"
+  level       String   // "undergraduate", "graduate", "professional"
+  capacity    Int
+  isAccredited Boolean @default(false)
+  features    String[]
+  icon        String?
+  slug        String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  applications Application[]
+  
+  @@map("programs")
+}
+
+// Medical Services
+model Service {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  duration    String?
+  features    String[]
+  icon        String?
+  category    String   // "homeopathy", "integrative", "herbal"
+  isActive    Boolean  @default(true)
+  slug        String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  appointments Appointment[]
+  
+  @@map("services")
+}
+
+// Medical Practitioners
+model Doctor {
+  id          String   @id @default(cuid())
+  name        String
+  title       String
+  specialization String
+  bio         String
+  education   String
+  experience  Int
+  rating      Float    @default(0)
+  reviewCount Int      @default(0)
+  image       String?
+  isActive    Boolean  @default(true)
+  slug        String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  appointments Appointment[]
+  
+  @@map("doctors")
+}
+
+// News and Blog Posts
+model News {
+  id          String   @id @default(cuid())
+  title       String
+  content     String
+  excerpt     String
+  category    String   // "education", "research", "general"
+  author      String
+  image       String?
+  isPublished Boolean  @default(false)
+  publishedAt DateTime?
+  slug        String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("news")
+}
+
+// Patient Testimonials
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  content   String
+  rating    Int      @default(5)
+  service   String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("testimonials")
+}
+
+// Student Applications
+model Application {
+  id          String   @id @default(cuid())
+  firstName   String
+  lastName    String
+  email       String
+  phone       String
+  programId   String
+  status      String   @default("pending") // "pending", "approved", "rejected"
+  documents   String[] // File paths
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  program     Program  @relation(fields: [programId], references: [id])
+  
+  @@map("applications")
+}
+
+// Patient Appointments
+model Appointment {
+  id        String   @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String
+  phone     String
+  serviceId String
+  doctorId  String?
+  date      DateTime
+  time      String
+  status    String   @default("scheduled") // "scheduled", "completed", "cancelled"
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  service    Service  @relation(fields: [serviceId], references: [id])
+  doctor     Doctor?  @relation(fields: [doctorId], references: [id])
+  
+  @@map("appointments")
+}
+
+// Contact Messages
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  status    String   @default("unread") // "unread", "read", "replied"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("contact_messages")
+}
+
+// History Timeline Events
+model HistoryEvent {
+  id          String   @id @default(cuid())
+  year        Int
+  title       String
+  description String
+  icon        String
+  color       String   // "ucsf-blue", "medical-green", "accent-orange"
+  stats       String[] // Array of statistics
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("history_events")
+}
+
+// Research Publications
+model Publication {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  content     String?  // Full article content
+  type        String   // "journal", "conference", "study"
+  year        Int
+  journal     String?
+  authors     String[]
+  doi         String?
+  url         String?
+  imageUrl    String?
+  slug        String   @unique
+  tags        String[]
+  readingTime Int?     // Reading time in minutes
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("publications")
+}
+
+// Research Studies
+model ResearchStudy {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  content     String?  // Full study content
+  status      String   // "active", "recruiting", "completed", "planning"
+  startDate   DateTime
+  endDate     DateTime?
+  participants Int?
+  centers     Int?
+  imageUrl    String?
+  slug        String   @unique
+  tags        String[]
+  readingTime Int?     // Reading time in minutes
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("research_studies")
+}
+
+// Research Collaborations
+model Collaboration {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  logo        String?
+  website     String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("collaborations")
+}
+
+// Achievements
+model Achievement {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  icon        String
+  color       String   // "ucsf-blue", "medical-green", "accent-orange"
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("achievements")
+}
+
+// Founder Information
+model FounderInfo {
+  id          String   @id @default(cuid())
+  name        String
+  birthDate   DateTime?
+  deathDate   DateTime?
+  title       String?
+  biography   Json     // JSON structure for detailed biography
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("founder_info")
+}
+
+// College History Events (Enhanced)
+model CollegeHistoryEvent {
+  id          String   @id @default(cuid())
+  year        Int
+  title       String
+  description String?
+  eventType   String   // "foundation", "milestone", "achievement", "expansion", "recognition"
+  details     Json?    // Additional structured data
+  imageUrl    String?
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("college_history_events")
+}
+
+// Academic Programs History
+model AcademicProgramHistory {
+  id              String   @id @default(cuid())
+  facultyName     String
+  departmentName  String?
+  programName     String
+  degreeType      String?
+  establishedYear Int?
+  description     String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("academic_programs_history")
+}
+
+// Facilities and Infrastructure History
+model FacilityHistory {
+  id              String   @id @default(cuid())
+  name            String
+  type            String   // "laboratory", "museum", "research_center", "library", "clinic"
+  description     String?
+  establishedYear Int?
+  equipment       String[] // Array of equipment
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("facility_history")
+}
+
+// Legacy and Achievements (Enhanced)
+model LegacyAchievement {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  category    String   // "recognition", "graduation", "international", "research", "community"
+  year        Int?
+  details     Json?    // Additional structured data
+  isFeatured  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("legacy_achievements")
+}
+
+// Historical Documents and Images
+model HistoricalDocument {
+  id            String   @id @default(cuid())
+  title         String
+  documentType  String   // "image", "document", "certificate", "newspaper", "photo"
+  fileUrl       String?
+  description   String?
+  year          Int?
+  source        String?
+  isFeatured    Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@map("historical_documents")
+}
