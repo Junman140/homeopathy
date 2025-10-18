@@ -3,8 +3,8 @@ import { AuthProvider } from '@/components/auth-provider'
 import './portal.css'
 
 export const metadata: Metadata = {
-  title: 'MOCHAM Portal - Postgraduate Portal',
-  description: 'MOCHAM Postgraduate Portal - Your gateway to advanced medical education',
+  title: 'MOCHAM Portal - Undergraduate Portal',
+  description: 'MOCHAM Undergraduate Portal - Your gateway to comprehensive medical education',
 }
 
 export default function PortalLayout({

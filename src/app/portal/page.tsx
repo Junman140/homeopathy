@@ -18,8 +18,8 @@ export default function PortalLanding() {
       subtitle: "in MOCHAM, we make your dream become a reality, through our progressive framework"
     },
     {
-      title: "Postgraduate Excellence",
-      subtitle: "Advance your medical career with world-class education"
+      title: "Undergraduate Excellence",
+      subtitle: "Build your medical foundation with comprehensive undergraduate education"
     }
   ]
 
@@ -35,7 +35,7 @@ export default function PortalLanding() {
             </svg>
           </div>
           <div>
-            <h1 className="portal-title">POSTGRADUATE PORTAL</h1>
+            <h1 className="portal-title">UNDERGRADUATE PORTAL</h1>
             <p className="portal-subtitle">MOCHAM</p>
           </div>
         </header>
@@ -72,7 +72,7 @@ export default function PortalLanding() {
         {/* Footer */}
         <footer className="portal-footer">
           <div className="portal-contact">
-            <div>© POSTGRADUATE PORTAL 2025 All right reserved</div>
+            <div>© UNDERGRADUATE PORTAL 2025 All right reserved</div>
             <div>
               <a href="mailto:portal@mocham.edu">portal@mocham.edu</a> | 
               <a href="tel:+2348023635890"> +2348023635890</a>

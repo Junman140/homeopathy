@@ -20,6 +20,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import HeroCarousel from "@/components/hero-carousel"
 
 // Types for our data
 interface Publication {
@@ -151,17 +152,35 @@ export default async function ResearchPage() {
     }
   }
 
+  // Research related images
+  const researchImages = [
+    '/11.png', // Research Wing
+    '/4.png', // Laboratory Facilities
+    '/5.png', // Library and Study Area
+    '/19.png',
+    '/20.png',
+    '/g.png',
+  ]
+
   return (
     <MainLayout>
+      {/* Hero Section with Carousel */}
+      <HeroCarousel 
+        images={researchImages}
+        title="Research & Publications"
+        subtitle="Latest insights and research findings"
+        description="Advancing alternative medicine through evidence-based research"
+      />
+
       {/* Blog Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
                   Research Blog
-                </h1>
+                </h2>
                 <p className="text-lg text-gray-600">
                   Latest insights, publications, and research findings in alternative medicine
                 </p>

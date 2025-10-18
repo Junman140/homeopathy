@@ -10,6 +10,10 @@ export default function PortalDashboard() {
   const [darkMode, setDarkMode] = useState(false)
   const [student, setStudent] = useState<PortalStudent | null>(null)
   const [loading, setLoading] = useState(true)
+  const [grades, setGrades] = useState<any[]>([])
+  const [certificates, setCertificates] = useState<any[]>([])
+  const [schedules, setSchedules] = useState<any[]>([])
+  const [courses, setCourses] = useState<any[]>([])
   const router = useRouter()
 
   useEffect(() => {
@@ -19,9 +23,45 @@ export default function PortalDashboard() {
       router.push('/portal')
     } else {
       setStudent(session)
+      // Fetch student data when session is available
+      fetchStudentData(session.id)
     }
     setLoading(false)
   }, [router])
+
+  const fetchStudentData = async (studentId: string) => {
+    try {
+      // Fetch grades
+      const gradesResponse = await fetch(`/api/student/grades?studentId=${studentId}`)
+      if (gradesResponse.ok) {
+        const gradesData = await gradesResponse.json()
+        setGrades(gradesData)
+      }
+
+      // Fetch certificates
+      const certificatesResponse = await fetch(`/api/student/certificates?studentId=${studentId}`)
+      if (certificatesResponse.ok) {
+        const certificatesData = await certificatesResponse.json()
+        setCertificates(certificatesData)
+      }
+
+      // Fetch schedules
+      const schedulesResponse = await fetch(`/api/student/schedules?studentId=${studentId}`)
+      if (schedulesResponse.ok) {
+        const schedulesData = await schedulesResponse.json()
+        setSchedules(schedulesData)
+      }
+
+      // Fetch courses
+      const coursesResponse = await fetch(`/api/student/courses?studentId=${studentId}`)
+      if (coursesResponse.ok) {
+        const coursesData = await coursesResponse.json()
+        setCourses(coursesData)
+      }
+    } catch (error) {
+      console.error('Error fetching student data:', error)
+    }
+  }
 
   const handleLogout = () => {
     clearPortalSession()
@@ -48,9 +88,7 @@ export default function PortalDashboard() {
     { id: 'courses', label: 'Courses', icon: '📚' },
     { id: 'grades', label: 'Grades', icon: '📊' },
     { id: 'schedule', label: 'Schedule', icon: '📅' },
-    { id: 'library', label: 'Library', icon: '📖' },
-    { id: 'messages', label: 'Messages', icon: '💬' },
-    { id: 'settings', label: 'Settings', icon: '⚙️' }
+    { id: 'certificates', label: 'Certificates', icon: '🎓' }
   ]
 
   return (
@@ -125,9 +163,9 @@ export default function PortalDashboard() {
                 </div>
                 
                 <div className="portal-action-card">
-                  <h3>📖 Digital Library</h3>
-                  <p>Access academic resources and research materials</p>
-                  <button onClick={() => setActiveTab('library')}>Access Library</button>
+                  <h3>🎓 My Certificates</h3>
+                  <p>View your earned certificates and achievements</p>
+                  <button onClick={() => setActiveTab('certificates')}>View Certificates</button>
                 </div>
               </div>
             </div>
@@ -142,7 +180,7 @@ export default function PortalDashboard() {
                 </div>
                 <div className="portal-profile-info">
                   <h2>{student.firstName} {student.lastName}</h2>
-                  <p>Postgraduate Student</p>
+                  <p>Undergraduate Student</p>
                   <p>MOCHAM - {student.program || 'Homeopathic Medicine'}</p>
                   <p>Student ID: {student.studentId || 'Pending Assignment'}</p>
                   <p>Email: {student.email}</p>
@@ -156,155 +194,141 @@ export default function PortalDashboard() {
           {activeTab === 'courses' && (
             <div className="portal-courses-content">
               <h1>My Courses</h1>
-              <div className="portal-course-list">
-                <div className="portal-course-card">
-                  <h3>Advanced Homeopathic Medicine</h3>
-                  <p>Course Code: AHM501</p>
-                  <p>Instructor: Dr. Smith</p>
-                  <div className="portal-course-progress">
-                    <div className="portal-progress-bar">
-                      <div className="portal-course-progress-fill-75"></div>
-                    </div>
-                    <span>75% Complete</span>
-                  </div>
+              {courses.length > 0 ? (
+                <div className="portal-course-list">
+                  {courses.map((enrollment, index) => {
+                    const course = enrollment.course
+                    const progressPercentage = enrollment.status === 'completed' ? 100 : 
+                                             enrollment.status === 'active' ? 75 : 0
+                    
+                    return (
+                      <div key={index} className="portal-course-card">
+                        <h3>{course.title}</h3>
+                        <p>Course Code: {course.code}</p>
+                        <p>Instructor: {course.instructor || 'TBA'}</p>
+                        <p>Credits: {course.credits}</p>
+                        <p>Status: <span className={`status-${enrollment.status}`}>{enrollment.status}</span></p>
+                        {enrollment.finalGrade && (
+                          <p>Final Grade: <strong>{enrollment.finalGrade}</strong></p>
+                        )}
+                        <div className="portal-course-progress">
+                          <div className="portal-progress-bar">
+                            <div 
+                              className={`portal-course-progress-fill-${progressPercentage}`}
+                              style={{ width: `${progressPercentage}%` }}
+                            ></div>
+                          </div>
+                          <span>{progressPercentage}% Complete</span>
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
-                
-                <div className="portal-course-card">
-                  <h3>Research Methodology</h3>
-                  <p>Course Code: RM502</p>
-                  <p>Instructor: Dr. Johnson</p>
-                  <div className="portal-course-progress">
-                    <div className="portal-progress-bar">
-                      <div className="portal-course-progress-fill-45"></div>
-                    </div>
-                    <span>45% Complete</span>
-                  </div>
+              ) : (
+                <div className="portal-no-data">
+                  <p>No courses enrolled yet. Contact your academic advisor to enroll in courses.</p>
                 </div>
-              </div>
+              )}
             </div>
           )}
 
           {activeTab === 'grades' && (
             <div className="portal-grades-content">
               <h1>Grades & Results</h1>
-              <div className="portal-grades-table">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Course</th>
-                      <th>Assignment</th>
-                      <th>Grade</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Advanced Homeopathic Medicine</td>
-                      <td>Midterm Exam</td>
-                      <td>85%</td>
-                      <td>Completed</td>
-                    </tr>
-                    <tr>
-                      <td>Research Methodology</td>
-                      <td>Research Proposal</td>
-                      <td>92%</td>
-                      <td>Completed</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              {grades.length > 0 ? (
+                <div className="portal-grades-table">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Course</th>
+                        <th>Code</th>
+                        <th>Semester</th>
+                        <th>Grade</th>
+                        <th>Score</th>
+                        <th>Year</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {grades.map((grade, index) => (
+                        <tr key={index}>
+                          <td>{grade.courseName}</td>
+                          <td>{grade.courseCode}</td>
+                          <td>{grade.semester}</td>
+                          <td>{grade.grade}</td>
+                          <td>{grade.score ? `${grade.score}${grade.maxScore ? `/${grade.maxScore}` : ''}` : 'N/A'}</td>
+                          <td>{grade.academicYear}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className="portal-no-data">
+                  <p>No grades have been uploaded yet. Check back later or contact your instructor.</p>
+                </div>
+              )}
             </div>
           )}
 
           {activeTab === 'schedule' && (
             <div className="portal-schedule-content">
               <h1>Class Schedule</h1>
-              <div className="portal-schedule-calendar">
-                <div className="portal-schedule-item">
-                  <h3>Advanced Homeopathic Medicine</h3>
-                  <p>Monday, Wednesday, Friday</p>
-                  <p>9:00 AM - 11:00 AM</p>
-                  <p>Room: AH-101</p>
+              {schedules.length > 0 ? (
+                <div className="portal-schedule-calendar">
+                  {schedules.map((schedule, index) => (
+                    <div key={index} className="portal-schedule-item">
+                      <h3>{schedule.title}</h3>
+                      {schedule.courseName && <p>Course: {schedule.courseName}</p>}
+                      {schedule.courseCode && <p>Code: {schedule.courseCode}</p>}
+                      <p>{schedule.dayOfWeek}</p>
+                      <p>{schedule.startTime} - {schedule.endTime}</p>
+                      {schedule.location && <p>Room: {schedule.location}</p>}
+                      {schedule.instructor && <p>Instructor: {schedule.instructor}</p>}
+                      <p>Type: {schedule.scheduleType}</p>
+                    </div>
+                  ))}
                 </div>
-                
-                <div className="portal-schedule-item">
-                  <h3>Research Methodology</h3>
-                  <p>Tuesday, Thursday</p>
-                  <p>2:00 PM - 4:00 PM</p>
-                  <p>Room: RM-205</p>
+              ) : (
+                <div className="portal-no-data">
+                  <p>No schedule has been uploaded yet. Check back later or contact your instructor.</p>
                 </div>
-              </div>
+              )}
             </div>
           )}
 
-          {activeTab === 'library' && (
-            <div className="portal-library-content">
-              <h1>Digital Library</h1>
-              <div className="portal-library-search">
-                <input type="text" placeholder="Search books, journals, articles..." />
-                <button>Search</button>
-              </div>
-              
-              <div className="portal-library-categories">
-                <div className="portal-library-category">
-                  <h3>📚 Textbooks</h3>
-                  <p>Access your course textbooks and reference materials</p>
+          {activeTab === 'certificates' && (
+            <div className="portal-certificates-content">
+              <h1>My Certificates</h1>
+              {certificates.length > 0 ? (
+                <div className="portal-certificates-list">
+                  {certificates.map((certificate, index) => (
+                    <div key={index} className="portal-certificate-item">
+                      <h3>
+                        {certificate.certificateType === 'degree' && '🎓 '}
+                        {certificate.certificateType === 'diploma' && '📜 '}
+                        {certificate.certificateType === 'certificate' && '🏆 '}
+                        {certificate.certificateType === 'transcript' && '📄 '}
+                        {certificate.certificateType === 'completion' && '✅ '}
+                        {certificate.title}
+                      </h3>
+                      <p>Type: {certificate.certificateType}</p>
+                      <p>Issued: {new Date(certificate.issueDate).toLocaleDateString()}</p>
+                      {certificate.expiryDate && (
+                        <p>Expires: {new Date(certificate.expiryDate).toLocaleDateString()}</p>
+                      )}
+                      {certificate.description && <p>{certificate.description}</p>}
+                      <p>Status: {certificate.isActive ? 'Active' : 'Inactive'}</p>
+                      <button onClick={() => window.open(certificate.fileUrl, '_blank')}>
+                        Download Certificate
+                      </button>
+                    </div>
+                  ))}
                 </div>
-                
-                <div className="portal-library-category">
-                  <h3>📄 Journals</h3>
-                  <p>Browse academic journals and research papers</p>
+              ) : (
+                <div className="portal-no-data">
+                  <p>No certificates have been uploaded yet. Contact your instructor or administrator.</p>
                 </div>
-                
-                <div className="portal-library-category">
-                  <h3>🔬 Research Papers</h3>
-                  <p>Find relevant research papers for your studies</p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'messages' && (
-            <div className="portal-messages-content">
-              <h1>Messages</h1>
-              <div className="portal-messages-list">
-                <div className="portal-message-item">
-                  <h3>Welcome to MOCHAM Portal</h3>
-                  <p>Welcome to the postgraduate portal. We're excited to have you as part of our community.</p>
-                  <span>2 hours ago</span>
-                </div>
-                
-                <div className="portal-message-item">
-                  <h3>Course Registration Reminder</h3>
-                  <p>Don't forget to register for your courses for the upcoming semester.</p>
-                  <span>1 day ago</span>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'settings' && (
-            <div className="portal-settings-content">
-              <h1>Settings</h1>
-              <div className="portal-settings-sections">
-                <div className="portal-settings-section">
-                  <h3>Account Settings</h3>
-                  <button>Update Profile</button>
-                  <button>Change Password</button>
-                </div>
-                
-                <div className="portal-settings-section">
-                  <h3>Notifications</h3>
-                  <button>Email Notifications</button>
-                  <button>SMS Notifications</button>
-                </div>
-                
-                <div className="portal-settings-section">
-                  <h3>Privacy</h3>
-                  <button>Privacy Settings</button>
-                  <button>Data Export</button>
-                </div>
-              </div>
+              )}
             </div>
           )}
         </main>

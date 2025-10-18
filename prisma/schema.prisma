@@ -10,27 +10,44 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Better Auth User Tables
-model User {
+// Better Auth User Tables (for student portal) - moved to end
+// model User {
+//   id        String   @id @default(cuid())
+//   name      String?
+//   email     String   @unique
+//   emailVerified DateTime?
+//   image     String?
+//   firstName String?
+//   lastName  String?
+//   phone     String?
+//   program   String?
+//   qualifications String?
+//   studentId String?
+//   enrollmentStatus String?
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   accounts Account[]
+//   sessions Session[]
+//   grades StudentGrade[]
+//   certificates StudentCertificate[]
+//   schedules StudentSchedule[]
+
+//   @@map("users")
+// }
+
+// Admin Users (separate from student users)
+model AdminUser {
   id        String   @id @default(cuid())
-  name      String?
   email     String   @unique
-  emailVerified DateTime?
-  image     String?
+  name      String?
   firstName String?
   lastName  String?
-  phone     String?
-  program   String?
-  qualifications String?
-  studentId String?
-  enrollmentStatus String?
+  isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  accounts Account[]
-  sessions Session[]
-
-  @@map("users")
+  @@map("admin_users")
 }
 
 model Account {
@@ -410,4 +427,154 @@ model HistoricalDocument {
   updatedAt     DateTime @updatedAt
   
   @@map("historical_documents")
+}
+
+// Student Grades (managed by admin)
+model StudentGrade {
+  id          String   @id @default(cuid())
+  userId      String
+  courseId    String?  // Optional reference to Course model
+  courseName  String
+  courseCode  String
+  semester    String
+  academicYear String
+  grade       String   // "A", "B", "C", "D", "F", "P", "NP"
+  score       Float?   // Numeric score if available
+  maxScore    Float?   // Maximum possible score
+  comments    String?
+  uploadedBy  String?  // Admin user ID who uploaded this grade
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course      Course?  @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  
+  @@map("student_grades")
+}
+
+// Student Certificates (managed by admin)
+model StudentCertificate {
+  id          String   @id @default(cuid())
+  userId      String
+  title       String
+  description String?
+  certificateType String // "degree", "diploma", "certificate", "transcript", "completion"
+  fileUrl     String   // Path to the certificate file
+  issueDate   DateTime
+  expiryDate  DateTime?
+  isActive    Boolean  @default(true)
+  uploadedBy  String?  // Admin user ID who uploaded this certificate
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("student_certificates")
+}
+
+// Student Schedules/Timetable (managed by admin)
+model StudentSchedule {
+  id          String   @id @default(cuid())
+  userId      String
+  courseId    String?  // Optional reference to Course model
+  title       String
+  description String?
+  courseCode  String?
+  courseName  String?
+  instructor  String?
+  location    String?
+  startTime   String   // Time format: "HH:MM"
+  endTime     String   // Time format: "HH:MM"
+  dayOfWeek   String   // "Monday", "Tuesday", etc.
+  date        DateTime? // Specific date if it's a one-time event
+  scheduleType String   // "class", "exam", "meeting", "event"
+  semester    String
+  academicYear String
+  isActive    Boolean  @default(true)
+  createdBy   String?  // Admin user ID who created this schedule
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course      Course?  @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  
+  @@map("student_schedules")
+}
+
+// Course Management System
+model Course {
+  id          String   @id @default(cuid())
+  title       String
+  code        String   @unique
+  description String?
+  credits     Int      @default(3)
+  duration    String   // e.g., "16 weeks", "1 semester"
+  level       String   // "beginner", "intermediate", "advanced"
+  category    String   // "core", "elective", "practical"
+  instructor  String?
+  prerequisites String[] // Array of course codes
+  isActive    Boolean  @default(true)
+  maxStudents Int?
+  currentEnrollment Int @default(0)
+  semester    String   // "fall", "spring", "summer"
+  academicYear String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  grades      StudentGrade[]
+  schedules   StudentSchedule[]
+  enrollments CourseEnrollment[]
+  
+  @@map("courses")
+}
+
+// Course Enrollment (Many-to-Many relationship between Users and Courses)
+model CourseEnrollment {
+  id          String   @id @default(cuid())
+  userId      String
+  courseId    String
+  enrolledAt  DateTime @default(now())
+  status      String   @default("active") // "active", "completed", "dropped", "failed"
+  finalGrade  String?
+  completedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, courseId])
+  @@map("course_enrollments")
+}
+
+// Better Auth User Tables (for student portal)
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  emailVerified DateTime?
+  image     String?
+  firstName String?
+  lastName  String?
+  phone     String?
+  program   String?
+  qualifications String?
+  studentId String?
+  enrollmentStatus String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+  grades StudentGrade[]
+  certificates StudentCertificate[]
+  schedules StudentSchedule[]
+  enrollments CourseEnrollment[]
+
+  @@map("users")
 }

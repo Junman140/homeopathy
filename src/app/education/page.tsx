@@ -13,6 +13,7 @@ import {
   MapPin
 } from "lucide-react"
 import Link from "next/link"
+import HeroCarousel from "@/components/hero-carousel"
 
 // Types for our data
 interface Program {
@@ -50,24 +51,26 @@ export const metadata = {
 
 export default async function EducationPage() {
   const programs = await getPrograms()
+  
+  // Education-related images
+  const educationImages = [
+    '/5.png', // Library and Study Area
+    '/7.png', // Lecture Halls
+    '/3.png', // Academic Block
+    '/4.png', // Laboratory Facilities
+    '/11.png', // Research Wing
+    '/12.png', // Campus Grounds
+  ]
+  
   return (
     <MainLayout>
-      {/* Hero Section */}
-      <section className="relative h-[500px] overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-ucsf-blue to-blue-800"></div>
-        <div className="relative h-full flex items-center">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center text-white">
-              <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                Education Excellence
-              </h1>
-              <p className="text-xl md:text-2xl text-blue-100 leading-relaxed">
-                Comprehensive alternative medicine education programs designed to prepare the next generation of healthcare practitioners.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero Section with Carousel */}
+      <HeroCarousel 
+        images={educationImages}
+        title="Education Excellence"
+        subtitle="Comprehensive alternative medicine education programs"
+        description="Preparing the next generation of healthcare practitioners"
+      />
 
       {/* Programs Overview */}
       <section className="py-20">
@@ -136,7 +139,7 @@ export default async function EducationPage() {
                         <span>{program.capacity} Students/Year</span>
                       </div>
                     </div>
-                    <Link href={`/education/${program.slug}`}>
+                    <Link href={`/portal`}>
                       <Button variant={getButtonVariant(program.type) as any} className="w-full">
                         Learn More
                       </Button>
@@ -225,79 +228,7 @@ export default async function EducationPage() {
         </div>
       </section>
 
-      {/* Academic Calendar */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Academic Calendar
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Important dates and deadlines for prospective and current students.
-            </p>
-          </div>
-
-          <div className="max-w-4xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-8">
-              <Card className="clean-card">
-                <CardContent className="p-8">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-6">2025 Academic Year</h3>
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center py-3 border-b">
-                      <span className="font-medium">Application Deadline</span>
-                      <span className="text-gray-600">March 31, 2025</span>
-                    </div>
-                    <div className="flex justify-between items-center py-3 border-b">
-                      <span className="font-medium">Entrance Examination</span>
-                      <span className="text-gray-600">April 15, 2025</span>
-                    </div>
-                    <div className="flex justify-between items-center py-3 border-b">
-                      <span className="font-medium">Admission Results</span>
-                      <span className="text-gray-600">May 15, 2025</span>
-                    </div>
-                    <div className="flex justify-between items-center py-3 border-b">
-                      <span className="font-medium">Registration Period</span>
-                      <span className="text-gray-600">June 1-15, 2025</span>
-                    </div>
-                    <div className="flex justify-between items-center py-3">
-                      <span className="font-medium">Classes Begin</span>
-                      <span className="text-gray-600">September 2, 2025</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="clean-card">
-                <CardContent className="p-8">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-6">Important Events</h3>
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center py-3 border-b">
-                      <span className="font-medium">Open House</span>
-                      <span className="text-gray-600">February 15, 2025</span>
-                    </div>
-                    <div className="flex justify-between items-center py-3 border-b">
-                      <span className="font-medium">Campus Tours</span>
-                      <span className="text-gray-600">Weekly</span>
-                    </div>
-                    <div className="flex justify-between items-center py-3 border-b">
-                      <span className="font-medium">Faculty Meet & Greet</span>
-                      <span className="text-gray-600">March 8, 2025</span>
-                    </div>
-                    <div className="flex justify-between items-center py-3 border-b">
-                      <span className="font-medium">Student Life Fair</span>
-                      <span className="text-gray-600">March 22, 2025</span>
-                    </div>
-                    <div className="flex justify-between items-center py-3">
-                      <span className="font-medium">Orientation Week</span>
-                      <span className="text-gray-600">August 26-30, 2025</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-      </section>
+       
 
       {/* Student Resources */}
       <section className="py-20 bg-gray-50">
@@ -373,15 +304,10 @@ export default async function EducationPage() {
             Join hundreds of successful graduates who are making a difference in healthcare through alternative medicine.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/admissions">
+            <Link href="/portal">
               <Button size="xl" className="bg-white text-ucsf-blue hover:bg-gray-100 font-semibold">
-                Apply Now
+                Student Portal
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-            <Link href="/contact-us">
-              <Button size="xl" variant="outline" className="border-white text-white hover:bg-white hover:text-ucsf-blue font-semibold">
-                Schedule Campus Tour
               </Button>
             </Link>
           </div>

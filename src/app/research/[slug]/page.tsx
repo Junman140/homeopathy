@@ -247,12 +247,12 @@ export default async function ResearchArticlePage({ params }: { params: Promise<
                 Share
               </Button>
               {publication && publication.url && (
-                <Button variant="outline" size="sm" asChild>
-                  <a href={publication.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center">
+                <a href={publication.url} target="_blank" rel="noopener noreferrer">
+                  <Button variant="outline" size="sm" className="inline-flex items-center">
                     <ExternalLink className="h-4 w-4 mr-2" />
                     View Original
-                  </a>
-                </Button>
+                  </Button>
+                </a>
               )}
             </div>
 

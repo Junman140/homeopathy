@@ -3,11 +3,11 @@ import { prisma } from '@/lib/prisma'
 
 export async function GET() {
   try {
-    const historicalDocuments = await prisma.historicalDocument.findMany({
+    const documents = await prisma.historicalDocument.findMany({
       orderBy: { year: 'desc' }
     })
 
-    return NextResponse.json(historicalDocuments)
+    return NextResponse.json(documents)
   } catch (error) {
     console.error('Error fetching historical documents:', error)
     return NextResponse.json(

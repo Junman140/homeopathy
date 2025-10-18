@@ -4,13 +4,41 @@ import { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight, Image as ImageIcon } from "lucide-react"
-import { historicalDocumentsData } from "@/lib/history-data"
 import Image from "next/image"
+
+interface HistoricalDocument {
+  id: string
+  title: string
+  description: string
+  documentType: string
+  fileUrl?: string | null
+  year?: number | null
+  isFeatured: boolean
+}
 
 export function HistoricalCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
-  const documents = historicalDocumentsData.filter(d => d.isFeatured)
+  const [documents, setDocuments] = useState<HistoricalDocument[]>([])
+  const [loading, setLoading] = useState(true)
+
+  // Fetch historical documents from API
+  useEffect(() => {
+    async function fetchDocuments() {
+      try {
+        const res = await fetch('/api/historical-documents')
+        if (res.ok) {
+          const data = await res.json()
+          setDocuments(data.filter((d: HistoricalDocument) => d.isFeatured && d.fileUrl))
+        }
+      } catch (error) {
+        console.error('Error fetching historical documents:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchDocuments()
+  }, [])
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % documents.length)
@@ -26,14 +54,14 @@ export function HistoricalCarousel() {
 
   // Auto-play functionality
   useEffect(() => {
-    if (!isPaused) {
+    if (!isPaused && documents.length > 0) {
       const interval = setInterval(() => {
         nextSlide()
       }, 5000) // Change slide every 5 seconds
 
       return () => clearInterval(interval)
     }
-  }, [currentIndex, isPaused])
+  }, [currentIndex, isPaused, documents.length])
 
   const handleMouseEnter = () => {
     setIsPaused(true)
@@ -41,6 +69,22 @@ export function HistoricalCarousel() {
 
   const handleMouseLeave = () => {
     setIsPaused(false)
+  }
+
+  if (loading) {
+    return (
+      <div className="relative w-full max-w-4xl mx-auto">
+        <Card className="clean-card overflow-hidden">
+          <div className="h-64 sm:h-80 md:h-96 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+            <div className="text-gray-500">Loading historical gallery...</div>
+          </div>
+        </Card>
+      </div>
+    )
+  }
+
+  if (documents.length === 0) {
+    return null
   }
 
   return (

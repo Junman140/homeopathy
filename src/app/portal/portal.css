@@ -645,6 +645,21 @@
   transition: width 0.3s ease;
 }
 
+.portal-no-data {
+  text-align: center;
+  padding: 2rem;
+  color: #6b7280;
+}
+
+.portal-dashboard.dark .portal-no-data {
+  color: #9ca3af;
+}
+
+.portal-no-data p {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
 .portal-grades-table {
   background: white;
   border-radius: 12px;

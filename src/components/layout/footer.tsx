@@ -1,7 +1,10 @@
 import Link from "next/link"
 import { Phone, Mail, MapPin, Facebook, Twitter, Linkedin, Instagram } from "lucide-react"
+import Image from "next/image"
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear()
+
   return (
     <footer className="bg-gray-900 text-white">
       <div className="container mx-auto px-4 py-12">
@@ -9,17 +12,15 @@ const Footer = () => {
           {/* School Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-ucsf-blue rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold">M</span>
-              </div>
+              <Image src="/mocha.png" alt="MOCHAM Logo" width={100} height={100} />
               <div>
-                <h3 className="font-bold text-lg">Medical & Homeopathy School</h3>
+                <h3 className="font-bold text-lg">MOCHAM</h3>
                 <p className="text-sm text-gray-400">Nigeria</p>
               </div>
             </div>
             <p className="text-gray-300 text-sm">
               Leading medical and homeopathy school in Nigeria offering comprehensive 
-              alternative medicine education with integrated clinic services.
+              alternative medicine education.
             </p>
             <div className="flex space-x-4">
               <Facebook className="h-5 w-5 text-gray-400 hover:text-white cursor-pointer" />
@@ -33,12 +34,10 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="font-semibold text-lg">Quick Links</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/about-us" className="text-gray-300 hover:text-white">About Us</Link></li>
-              <li><Link href="/programs" className="text-gray-300 hover:text-white">Academic Programs</Link></li>
-              <li><Link href="/admissions" className="text-gray-300 hover:text-white">Admissions</Link></li>
-              <li><Link href="/clinic/services" className="text-gray-300 hover:text-white">Clinic Services</Link></li>
+              <li><Link href="/history" className="text-gray-300 hover:text-white">About Us</Link></li>
+              <li><Link href="/education" className="text-gray-300 hover:text-white">Academic Programs</Link></li>
+              <li><Link href="/portal" className="text-gray-300 hover:text-white">Admissions</Link></li>
               <li><Link href="/research" className="text-gray-300 hover:text-white">Research</Link></li>
-              <li><Link href="/news-blog" className="text-gray-300 hover:text-white">News & Blog</Link></li>
             </ul>
           </div>
 
@@ -46,12 +45,8 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="font-semibold text-lg">Programs</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/programs/medical-degree" className="text-gray-300 hover:text-white">Medical Degree</Link></li>
-              <li><Link href="/programs/homeopathy-diploma" className="text-gray-300 hover:text-white">Homeopathy Diploma</Link></li>
-              <li><Link href="/programs/naturopathy-certificate" className="text-gray-300 hover:text-white">Naturopathy Certificate</Link></li>
-              <li><Link href="/programs/continuing-education" className="text-gray-300 hover:text-white">Continuing Education</Link></li>
-              <li><Link href="/student-life" className="text-gray-300 hover:text-white">Student Life</Link></li>
-              <li><Link href="/events" className="text-gray-300 hover:text-white">Events</Link></li>
+              <li><Link href="/education" className="text-gray-300 hover:text-white">Medical Degree</Link></li>
+              <li><Link href="/education" className="text-gray-300 hover:text-white">Homeopathy Diploma</Link></li>
             </ul>
           </div>
 
@@ -63,19 +58,18 @@ const Footer = () => {
                 <MapPin className="h-5 w-5 text-gray-400 mt-0.5" />
                 <div>
                   <p className="text-gray-300">
-                    123 Medical Drive<br />
-                    Lagos State, Nigeria<br />
-                    100001
+                    11 Homoeopathic Crescent by 152 Aka Road, Adjacent to Ukana Offot Street,<br />
+                    Uyo, Akwa Ibom State, Nigeria<br />
                   </p>
                 </div>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-gray-400" />
-                <p className="text-gray-300">+234-xxx-xxx-xxxx</p>
+                <p className="text-gray-300">+234-803-793-5596</p>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-gray-400" />
-                <p className="text-gray-300">info@medicalhomeopathyschool.edu.ng</p>
+                <p className="text-gray-300">Mochams1@yahoo.com</p>
               </div>
             </div>
           </div>
@@ -85,18 +79,13 @@ const Footer = () => {
         <div className="border-t border-gray-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-sm text-gray-400">
-              © 2025 Medical & Homeopathy School Nigeria. All rights reserved.
+              © {currentYear} MOCHAM School Nigeria. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <Link href="/privacy-policy" className="text-sm text-gray-400 hover:text-white">
                 Privacy Policy
               </Link>
-              <Link href="/terms-of-service" className="text-sm text-gray-400 hover:text-white">
-                Terms of Service
-              </Link>
-              <Link href="/sitemap" className="text-sm text-gray-400 hover:text-white">
-                Sitemap
-              </Link>
+              
             </div>
           </div>
         </div>

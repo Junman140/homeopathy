@@ -123,35 +123,52 @@
     }
   },
   "academicPrograms": {
+    "title": "Academic Programs",
+    "description": "Comprehensive educational programs in Homoeopathic and Alternative Medicine",
     "faculties": [
       {
-        "name": "Homoeopathic Medical Sciences",
+        "name": "Faculty of Homoeopathic Medical Sciences",
+        "description": "The Faculty of Homoeopathic Medical Sciences is dedicated to producing highly skilled practitioners in classical and modern homoeopathy. Our comprehensive curriculum combines theoretical knowledge with practical clinical experience.",
         "departments": [
           {
             "name": "Homoeopathic Clinical Medicine",
-            "offering": "DHM [Advanced] equivalent to first degree [B.Sc.]"
+            "offering": "DHM [Advanced] equivalent to first degree [B.Sc.]",
+            "description": "Advanced training in clinical diagnosis, repertorization, and case management using classical homoeopathic principles"
           },
           {
             "name": "Homoeopathic Nursing/Midwifery",
-            "offering": "Ordinary diploma (OD-HNM) and Advanced diploma (AD-HNM)"
+            "offering": "Ordinary diploma (OD-HNM) and Advanced diploma (AD-HNM)",
+            "description": "Specialized training for nurses and midwives in homoeopathic patient care and maternal health"
           },
           {
             "name": "Veterinary Homoeopathy",
-            "offering": "D. Vet.HOM."
+            "offering": "D. Vet.HOM.",
+            "description": "Application of homoeopathic principles to animal health and veterinary practice"
           },
           {
             "name": "Homoeopathic Pharmacy",
-            "offering": "Advanced diploma in homoeopathic pharmacy [DHPh]"
+            "offering": "Advanced diploma in homoeopathic pharmacy [DHPh]",
+            "description": "Training in preparation, dispensing, and quality control of homoeopathic medicines"
           },
           {
             "name": "Electro-homoeopathy",
-            "offering": "Diploma in Electro-homoeopathy [Dip.EH]"
+            "offering": "Diploma in Electro-homoeopathy [Dip.EH]",
+            "description": "Study of plant-based spagyric remedies and electro-homoeopathic treatment methods"
           }
         ]
       },
       {
-        "name": "Alternative/Complementary Medicine",
-        "description": "Various departments offering degrees, post graduate diploma, advanced diploma, diploma and certificate programs"
+        "name": "Faculty of Alternative/Complementary Medicine",
+        "description": "The Faculty of Alternative/Complementary Medicine offers diverse programs in various natural healing modalities. Students receive comprehensive training in multiple therapeutic approaches to provide holistic patient care.",
+        "programs": [
+          "Naturopathy",
+          "Biochemistry",
+          "Diet and Nutrition",
+          "Botanic Medicine",
+          "Traditional Medicine",
+          "Natural Therapeutics"
+        ],
+        "qualifications": "Offering degrees, post graduate diploma, advanced diploma, diploma and certificate programs"
       }
     ]
   },
@@ -165,22 +182,61 @@
     "To encourage students to develop system of values against which to judge use of knowledge and skills"
   ],
   "facilities": {
+    "title": "Facilities & Infrastructure",
+    "description": "State-of-the-art facilities supporting comprehensive medical education and research",
     "laboratories": [
-      "Anatomy/Physiology Laboratory",
-      "Pathology Laboratory", 
-      "Pharmacy Laboratory",
-      "Physics Laboratory",
-      "Chemistry Laboratory"
+      {
+        "name": "Anatomy/Physiology Laboratory",
+        "description": "Well-equipped laboratory for study of human anatomy and physiological processes"
+      },
+      {
+        "name": "Pathology Laboratory",
+        "description": "Modern facility for disease diagnosis and pathological studies"
+      },
+      {
+        "name": "Pharmacy Laboratory",
+        "description": "Specialized laboratory for preparation and analysis of homoeopathic medicines"
+      },
+      {
+        "name": "Physics Laboratory",
+        "description": "Laboratory equipped for physical science experiments and demonstrations"
+      },
+      {
+        "name": "Chemistry Laboratory",
+        "description": "Comprehensive chemistry laboratory for biochemical and pharmaceutical analysis"
+      }
     ],
     "museums": [
-      "Museum of Anatomy",
-      "Museum of Pathology", 
-      "Museum of Pharmacology"
+      {
+        "name": "Museum of Anatomy",
+        "description": "Collection of anatomical specimens and models for medical education"
+      },
+      {
+        "name": "Museum of Pathology",
+        "description": "Pathological specimens demonstrating various disease processes"
+      },
+      {
+        "name": "Museum of Pharmacology",
+        "description": "Display of medicinal plants and homoeopathic materia medica"
+      }
     ],
-    "equipment": "Modern charts and specimens demonstrated to students by respective lecturers",
+    "teachingAids": {
+      "equipment": "Modern charts and specimens demonstrated to students by respective lecturers",
+      "resources": "Comprehensive collection of educational materials and reference books"
+    },
     "researchCenter": {
+      "description": "Dedicated research facility for advancing homoeopathic and alternative medicine",
       "requirement": "Application in writing stating credentials or curriculum vitae",
       "process": "Interview when need be"
+    },
+    "library": {
+      "description": "Extensive collection of medical texts, journals, and reference materials",
+      "specialCollections": "Rare homoeopathic manuscripts and historical documents"
+    },
+    "clinicalFacilities": {
+      "hospitalWing": "Teaching hospital for practical clinical training",
+      "outpatientDepartment": "OPD for student clinical exposure and patient care",
+      "inpatientFacility": "Beds for patient admission and observation"
     }
   },
   "fellowshipPrivileges": [

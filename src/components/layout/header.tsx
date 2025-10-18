@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import React, { useState } from "react"
 import { Menu, X, Phone, Mail, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -45,7 +46,7 @@ const Header = () => {
             <div className="flex items-center space-x-6 mb-2 md:mb-0">
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4" />
-                <span className="text-xs sm:text-sm">info@medicalhomeopathyschool.edu.ng</span>
+                <span className="text-xs sm:text-sm">Mochams1@yahoo.com</span>
               </div>
             </div>
             <div className="flex items-center space-x-2">
@@ -63,7 +64,7 @@ const Header = () => {
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2 sm:space-x-3">
               <div className="w-10 h-10 sm:w-12 sm:h-12 bg-ucsf-blue rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg sm:text-xl">M</span>
+                <Image src="/mocha.png" alt="MOCHAM Logo" width={100} height={100} />
               </div>
               <div className="hidden sm:block">
                 <h1 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100">
@@ -129,7 +130,7 @@ const Header = () => {
                   <NavigationMenuContent isOpen={isClinicOpen}>
                     <div className="grid gap-3 p-6">
                       <Link 
-                        href="/patient-care/services" 
+                        href="/patient-care" 
                         className="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                         onClick={() => setIsClinicOpen(false)}
                       >
@@ -137,7 +138,7 @@ const Header = () => {
                         <p className="text-sm text-gray-600 dark:text-gray-400">Alternative medicine treatments</p>
                       </Link>
                       <Link 
-                        href="/patient-care/doctors" 
+                        href="/patient-care" 
                         className="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                         onClick={() => setIsClinicOpen(false)}
                       >
@@ -145,7 +146,7 @@ const Header = () => {
                         <p className="text-sm text-gray-600 dark:text-gray-400">Meet our expert practitioners</p>
                       </Link>
                       <Link 
-                        href="/patient-care/appointments" 
+                        href="/patient-care" 
                         className="block p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                         onClick={() => setIsClinicOpen(false)}
                       >
@@ -223,7 +224,7 @@ const Header = () => {
                 <Link href="/patient-care" className="block py-1 pl-4 text-gray-600 dark:text-gray-400">
                   Services
                 </Link>
-                <Link href="/patient-care/appointments" className="block py-1 pl-4 text-gray-600 dark:text-gray-400">
+                <Link href="/patient-care" className="block py-1 pl-4 text-gray-600 dark:text-gray-400">
                   Book Appointment
                 </Link>
               </div>

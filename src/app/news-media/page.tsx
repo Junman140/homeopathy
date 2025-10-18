@@ -13,35 +13,97 @@ import {
   Image as ImageIcon
 } from "lucide-react"
 import Link from "next/link"
-import { historicalDocumentsData } from "@/lib/history-data"
 import Image from "next/image"
+import HeroCarousel from "@/components/hero-carousel"
 
-export const metadata = {
-  title: "News & Media | Medical & Homeopathy School Nigeria",
-  description: "Stay updated with the latest news, research findings, and institutional updates from Nigeria's premier alternative medicine school.",
+// Type definitions
+interface NewsArticle {
+  id: string
+  title: string
+  excerpt: string
+  category: string
+  author: string
+  publishedAt: string
+  slug: string
 }
 
-export default function NewsMediaPage() {
+interface HistoricalDocument {
+  id: string
+  title: string
+  description: string
+  documentType: string
+  fileUrl: string | null
+  year: number
+  isFeatured: boolean
+}
+
+// Force TypeScript to re-evaluate types
+
+export const metadata = {
+  title: "News & Media | MOCHAM - Modern College of Homoeopathy/Alternative Medicine",
+  description: "Stay updated with the latest news, research findings, and institutional updates from Nigeria's first and leading alternative medicine school.",
+}
+
+// Fetch news and historical documents from database
+async function getNewsData(): Promise<NewsArticle[]> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/news`, {
+      cache: 'no-store'
+    })
+    if (!response.ok) throw new Error('Failed to fetch news')
+    return await response.json()
+  } catch (error) {
+    console.error('Error fetching news:', error)
+    return []
+  }
+}
+
+async function getHistoricalDocuments(): Promise<HistoricalDocument[]> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/historical-documents`, {
+      cache: 'no-store'
+    })
+    if (!response.ok) throw new Error('Failed to fetch historical documents')
+    return await response.json()
+  } catch (error) {
+    console.error('Error fetching historical documents:', error)
+    return []
+  }
+}
+
+export default async function NewsMediaPage() {
+  // Fetch data from database
+  const [newsData, historicalDocuments] = await Promise.all([
+    getNewsData(),
+    getHistoricalDocuments()
+  ])
+
+  // News and media related images
+  const newsImages = [
+    '/13.png',
+    '/14.png',
+    '/15.png',
+    '/16.png',
+    '/17.png',
+    '/18.png',
+  ]
+
+  // Get featured news (first one) and latest news (next 5)
+  const featuredNews = newsData.length > 0 ? newsData[0] : null
+  const latestNews = newsData.slice(1, 6)
+  
   return (
     <MainLayout>
-      {/* Hero Section */}
-      <section className="relative h-[500px] overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-accent-orange to-orange-800"></div>
-        <div className="relative h-full flex items-center">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center text-white">
-              <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                News & Media
-              </h1>
-              <p className="text-xl md:text-2xl text-orange-100 leading-relaxed">
-                Stay informed with the latest developments in alternative medicine education and research.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero Section with Carousel */}
+      <HeroCarousel 
+        images={newsImages}
+        title="News & Media"
+        subtitle="Stay informed with the latest developments"
+        description="Alternative medicine education and research updates"
+      />
 
       {/* Featured Story */}
+      {featuredNews && (
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
@@ -59,26 +121,28 @@ export default function NewsMediaPage() {
                 <CardContent className="p-8 lg:p-12">
                   <div className="flex items-center text-sm text-gray-500 mb-4">
                     <Calendar className="h-4 w-4 mr-2" />
-                    <span>September 19, 2024</span>
+                      <span>{new Date(featuredNews.publishedAt).toLocaleDateString()}</span>
                     <span className="mx-2">•</span>
                     <Tag className="h-4 w-4 mr-1" />
-                    <span>Education</span>
+                      <span className="capitalize">{featuredNews.category}</span>
                   </div>
                   <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
-                    How Traditional Medicine Enhances Modern Healthcare Education
+                      {featuredNews.title}
                   </h3>
                   <p className="text-gray-600 mb-6 text-lg leading-relaxed">
-                    A comprehensive look at how our institution is bridging the gap between traditional healing wisdom and contemporary medical training, preparing students for a more holistic approach to patient care.
+                      {featuredNews.excerpt}
                   </p>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center text-sm text-gray-500">
                       <User className="h-4 w-4 mr-2" />
-                      <span>Dr. Sarah Adebayo, President</span>
+                        <span>{featuredNews.author}</span>
                     </div>
+                      <Link href={`/news/${featuredNews.slug}`}>
                     <Button variant="outline" size="sm">
                       Read Full Story
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
+                      </Link>
                   </div>
                 </CardContent>
               </div>
@@ -86,6 +150,7 @@ export default function NewsMediaPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* Latest News */}
       <section className="py-20 bg-gray-50">
@@ -112,191 +177,57 @@ export default function NewsMediaPage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="clean-card hover:shadow-lg transition-shadow">
-              <div className="h-48 bg-gradient-to-br from-medical-green to-green-600 flex items-center justify-center">
+            {latestNews.length > 0 ? (
+              latestNews.map((article: NewsArticle, index: number) => {
+                const colors = [
+                  'from-medical-green to-green-600',
+                  'from-accent-orange to-orange-600',
+                  'from-ucsf-blue to-blue-600'
+                ]
+                const colorClass = colors[index % colors.length]
+                
+                return (
+                  <Card key={article.id} className="clean-card hover:shadow-lg transition-shadow">
+                    <div className={`h-48 bg-gradient-to-br ${colorClass} flex items-center justify-center`}>
                 <BookOpen className="h-16 w-16 text-white" />
               </div>
               <CardContent className="p-6">
                 <div className="flex items-center text-sm text-gray-500 mb-3">
                   <Calendar className="h-4 w-4 mr-2" />
-                  <span>August 15, 2024</span>
+                        <span>{new Date(article.publishedAt).toLocaleDateString()}</span>
                   <span className="mx-2">•</span>
                   <Tag className="h-4 w-4 mr-1" />
-                  <span>Research</span>
+                        <span className="capitalize">{article.category}</span>
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-3">
-                  New Study: Homeopathic Remedies Show Promise in Chronic Disease Management
+                        {article.title}
                 </h3>
                 <p className="text-gray-600 text-sm mb-4">
-                  Latest research findings on the efficacy of homeopathic treatments in long-term care and chronic disease management...
+                        {article.excerpt}
                 </p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center text-sm text-gray-500">
                     <User className="h-4 w-4 mr-2" />
-                    <span>Research Team</span>
+                          <span>{article.author}</span>
                   </div>
+                        <Link href={`/news/${article.slug}`}>
                   <Button variant="ghost" size="sm">
                     Read More
                     <ArrowRight className="ml-1 h-3 w-3" />
                   </Button>
+                        </Link>
                 </div>
               </CardContent>
             </Card>
-
-            <Card className="clean-card hover:shadow-lg transition-shadow">
-              <div className="h-48 bg-gradient-to-br from-accent-orange to-orange-600 flex items-center justify-center">
-                <BookOpen className="h-16 w-16 text-white" />
+                )
+              })
+            ) : (
+              <div className="col-span-full text-center py-12">
+                <BookOpen className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">No News Articles Available</h3>
+                <p className="text-gray-600">Check back later for the latest updates and news from MOCHAM.</p>
               </div>
-              <CardContent className="p-6">
-                <div className="flex items-center text-sm text-gray-500 mb-3">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  <span>July 28, 2024</span>
-                  <span className="mx-2">•</span>
-                  <Tag className="h-4 w-4 mr-1" />
-                  <span>Institution</span>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-3">
-                  Celebrating 15 Years of Excellence in Alternative Medicine Education
-                </h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  Reflecting on our journey and impact in Nigeria's alternative medicine landscape over the past 15 years...
-                </p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center text-sm text-gray-500">
-                    <User className="h-4 w-4 mr-2" />
-                    <span>Administration</span>
-                  </div>
-                  <Button variant="ghost" size="sm">
-                    Read More
-                    <ArrowRight className="ml-1 h-3 w-3" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="clean-card hover:shadow-lg transition-shadow">
-              <div className="h-48 bg-gradient-to-br from-ucsf-blue to-blue-600 flex items-center justify-center">
-                <BookOpen className="h-16 w-16 text-white" />
-              </div>
-              <CardContent className="p-6">
-                <div className="flex items-center text-sm text-gray-500 mb-3">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  <span>July 10, 2024</span>
-                  <span className="mx-2">•</span>
-                  <Tag className="h-4 w-4 mr-1" />
-                  <span>Research</span>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-3">
-                  International Collaboration Advances Herbal Medicine Research
-                </h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  New partnership with international institutions brings cutting-edge research methodologies to traditional medicine...
-                </p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center text-sm text-gray-500">
-                    <User className="h-4 w-4 mr-2" />
-                    <span>Research Team</span>
-                  </div>
-                  <Button variant="ghost" size="sm">
-                    Read More
-                    <ArrowRight className="ml-1 h-3 w-3" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="clean-card hover:shadow-lg transition-shadow">
-              <div className="h-48 bg-gradient-to-br from-medical-green to-green-600 flex items-center justify-center">
-                <BookOpen className="h-16 w-16 text-white" />
-              </div>
-              <CardContent className="p-6">
-                <div className="flex items-center text-sm text-gray-500 mb-3">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  <span>June 25, 2024</span>
-                  <span className="mx-2">•</span>
-                  <Tag className="h-4 w-4 mr-1" />
-                  <span>Student Life</span>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-3">
-                  Student Research Symposium Showcases Innovative Projects
-                </h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  Annual research symposium highlights student contributions to alternative medicine knowledge and practice...
-                </p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center text-sm text-gray-500">
-                    <User className="h-4 w-4 mr-2" />
-                    <span>Student Affairs</span>
-                  </div>
-                  <Button variant="ghost" size="sm">
-                    Read More
-                    <ArrowRight className="ml-1 h-3 w-3" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="clean-card hover:shadow-lg transition-shadow">
-              <div className="h-48 bg-gradient-to-br from-accent-orange to-orange-600 flex items-center justify-center">
-                <BookOpen className="h-16 w-16 text-white" />
-              </div>
-              <CardContent className="p-6">
-                <div className="flex items-center text-sm text-gray-500 mb-3">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  <span>June 12, 2024</span>
-                  <span className="mx-2">•</span>
-                  <Tag className="h-4 w-4 mr-1" />
-                  <span>Education</span>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-3">
-                  New Curriculum Integrates Digital Health Technologies
-                </h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  Updated curriculum incorporates modern digital health tools and telemedicine practices into alternative medicine training...
-                </p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center text-sm text-gray-500">
-                    <User className="h-4 w-4 mr-2" />
-                    <span>Academic Affairs</span>
-                  </div>
-                  <Button variant="ghost" size="sm">
-                    Read More
-                    <ArrowRight className="ml-1 h-3 w-3" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="clean-card hover:shadow-lg transition-shadow">
-              <div className="h-48 bg-gradient-to-br from-ucsf-blue to-blue-600 flex items-center justify-center">
-                <BookOpen className="h-16 w-16 text-white" />
-              </div>
-              <CardContent className="p-6">
-                <div className="flex items-center text-sm text-gray-500 mb-3">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  <span>May 30, 2024</span>
-                  <span className="mx-2">•</span>
-                  <Tag className="h-4 w-4 mr-1" />
-                  <span>Community</span>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-3">
-                  Community Health Outreach Program Reaches 5,000 Patients
-                </h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  Our community health initiative provides free alternative medicine consultations to underserved populations...
-                </p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center text-sm text-gray-500">
-                    <User className="h-4 w-4 mr-2" />
-                    <span>Community Outreach</span>
-                  </div>
-                  <Button variant="ghost" size="sm">
-                    Read More
-                    <ArrowRight className="ml-1 h-3 w-3" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            )}
           </div>
 
           <div className="text-center mt-12">
@@ -376,7 +307,8 @@ export default function NewsMediaPage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {historicalDocumentsData.filter(d => d.isFeatured).map((document) => (
+            {historicalDocuments.filter((d: HistoricalDocument) => d.isFeatured).length > 0 ? (
+              historicalDocuments.filter((d: HistoricalDocument) => d.isFeatured).map((document: HistoricalDocument) => (
               <Card key={document.id} className="clean-card hover:shadow-lg transition-shadow overflow-hidden">
                 <div className="h-48 bg-gray-200 dark:bg-gray-700 flex flex-col items-center justify-center relative">
                   {document.fileUrl ? (
@@ -403,7 +335,14 @@ export default function NewsMediaPage() {
                   </div>
                 </CardContent>
               </Card>
-            ))}
+              ))
+            ) : (
+              <div className="col-span-full text-center py-12">
+                <ImageIcon className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">No Historical Documents Available</h3>
+                <p className="text-gray-600">Historical documents will be added as they become available.</p>
+              </div>
+            )}
           </div>
 
           <div className="text-center mt-12">
@@ -446,11 +385,11 @@ export default function NewsMediaPage() {
                   <div className="space-y-4">
                     <div>
                       <strong className="text-dim-blue-800 dark:text-gray-100">Email:</strong>
-                      <span className="text-dim-blue-600 dark:text-gray-300 ml-2">media@medicalhomeopathyschool.edu.ng</span>
+                      <span className="text-dim-blue-600 dark:text-gray-300 ml-2">Mochams1@yahoo.com</span>
                     </div>
                     <div>
                       <strong className="text-dim-blue-800 dark:text-gray-100">Phone:</strong>
-                      <span className="text-dim-blue-600 dark:text-gray-300 ml-2">+234-xxx-xxx-xxxx</span>
+                      <span className="text-dim-blue-600 dark:text-gray-300 ml-2">+234-803-793-5596</span>
                     </div>
                     <div>
                       <strong className="text-dim-blue-800 dark:text-gray-100">Response Time:</strong>

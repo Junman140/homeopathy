@@ -14,6 +14,7 @@ import {
   Star
 } from "lucide-react"
 import Link from "next/link"
+import HeroCarousel from "@/components/hero-carousel"
 
 // Types for our data
 interface Service {
@@ -104,24 +105,26 @@ export default async function PatientCarePage() {
     getDoctors(),
     getTestimonials()
   ])
+  
+  // Patient care related images
+  const patientCareImages = [
+    '/6.png', // Clinical Training Center
+    '/8.png', // Student Common Area
+    '/10.png', // Pharmacy Department
+    '/2.png', // Campus Facilities
+    '/4.png', // Laboratory Facilities
+    '/1.png', // College Building Main Entrance
+  ]
+  
   return (
     <MainLayout>
-      {/* Hero Section */}
-      <section className="relative h-[500px] overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-medical-green to-green-800"></div>
-        <div className="relative h-full flex items-center">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center text-white">
-              <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                Patient Care
-              </h1>
-              <p className="text-xl md:text-2xl text-green-100 leading-relaxed">
-                Comprehensive alternative medicine services provided by our expert practitioners in a caring, professional environment.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero Section with Carousel */}
+      <HeroCarousel 
+        images={patientCareImages}
+        title="Patient Care"
+        subtitle="Comprehensive alternative medicine services"
+        description="Expert practitioners in a caring, professional environment"
+      />
 
       {/* Our Services */}
       <section className="py-20">
@@ -237,21 +240,10 @@ export default async function PatientCarePage() {
                         <span className="ml-2 text-sm text-gray-500">({doctor.rating}/5)</span>
                       </div>
                     </div>
-                    <Button variant="outline" size="sm" className="w-full">
-                      Book Consultation
-                    </Button>
                   </CardContent>
                 </Card>
               )
             })}
-          </div>
-
-          <div className="text-center mt-12">
-            <Link href="/patient-care/doctors">
-              <Button variant="outline" size="lg">
-                View All Doctors
-              </Button>
-            </Link>
           </div>
         </div>
       </section>
@@ -300,19 +292,10 @@ export default async function PatientCarePage() {
                   <div>
                     <h3 className="font-semibold text-lg mb-2">Phone Support</h3>
                     <p className="text-gray-600">
-                      Prefer to speak with someone? Call us at +234-xxx-xxx-xxxx for personalized assistance.
+                      Prefer to speak with someone? Call us at +234-803-793-5596 for personalized assistance.
                     </p>
                   </div>
                 </div>
-              </div>
-
-              <div className="mt-8">
-                <Link href="/patient-care/appointments">
-                  <Button size="lg" variant="medical">
-                    Book Appointment Online
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
               </div>
             </div>
 
@@ -338,14 +321,15 @@ export default async function PatientCarePage() {
                   <div className="mt-8 p-4 bg-medical-green/10 rounded-lg">
                     <h4 className="font-semibold text-gray-900 mb-2">Emergency Contact</h4>
                     <p className="text-sm text-gray-600">
-                      For urgent medical concerns outside office hours, call our emergency line at +234-xxx-xxx-xxxx.
+                      For urgent medical concerns outside office hours, call our emergency line at +234-803-793-5596.
                     </p>
                   </div>
 
                   <div className="mt-6">
                     <div className="flex items-center text-sm text-gray-600">
                       <MapPin className="h-4 w-4 mr-2" />
-                      <span>123 Medical Drive, Lagos State, Nigeria</span>
+                      <span>11 Homoeopathic Crescent by 152 Aka Road, Adjacent to Ukana Offot Street,<br />
+                      Uyo, Akwa Ibom State, Nigeria.<br /></span>
                     </div>
                   </div>
                 </CardContent>
@@ -403,30 +387,6 @@ export default async function PatientCarePage() {
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-20 bg-medical-green text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Ready to Begin Your Healing Journey?
-          </h2>
-          <p className="text-xl mb-8 text-green-100 max-w-2xl mx-auto">
-            Take the first step towards better health with our comprehensive alternative medicine services.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/patient-care/appointments">
-              <Button size="xl" className="bg-white text-medical-green hover:bg-gray-100 font-semibold">
-                Book Appointment
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-            <Link href="/contact-us">
-              <Button size="xl" variant="outline" className="border-white text-white hover:bg-white hover:text-medical-green font-semibold">
-                Contact Us
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
     </MainLayout>
   )
 }

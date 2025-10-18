@@ -1,4 +1,5 @@
 import MainLayout from "@/components/layout/main-layout"
+import HeroCarousel from "@/components/hero-carousel"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { 
@@ -12,31 +13,34 @@ import {
   CheckCircle,
   Calendar,
   MapPin,
-  Phone
+  Phone,
+  BookOpen,
+  Microscope,
+  Stethoscope
 } from "lucide-react"
 import Link from "next/link"
 
 export const metadata = {
-  title: "About Us | Medical & Homeopathy School Nigeria",
-  description: "Learn about our mission, vision, and commitment to excellence in alternative medicine education. Discover our history, values, and the expert team behind Nigeria's premier medical and homeopathy school.",
+  title: "About Us | MOCHAM - Modern College of Homoeopathy/Alternative Medicine",
+  description: "Learn about MOCHAM's mission, vision, and commitment to excellence in alternative medicine education. Discover our heritage, values, and the legacy of Dr. Effiong Udo Umoren, founder of Nigeria's first homeopathic institution.",
 }
 
 export default function AboutUsPage() {
+  const heroImages = [
+    '/aerial.jpg',
+    '/abs.jpg', 
+    '/tippi-mackenzie-homepage-banner-updated.jpeg'
+  ]
+
   return (
     <MainLayout>
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-medical-blue via-blue-800 to-healing-green text-white py-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              About Medical & Homeopathy School Nigeria
-            </h1>
-            <p className="text-xl md:text-2xl text-blue-100 leading-relaxed">
-              Pioneering excellence in alternative medicine education and healthcare services since 2009.
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* Hero Section with Carousel */}
+      <HeroCarousel
+        images={heroImages}
+        title="About MOCHAM"
+        subtitle="Nigeria's Premier Alternative Medicine Education Institution"
+        description="Established in 1982 by Dr. Effiong Udo Umoren, we are the first and leading institution dedicated to homeopathic and alternative medicine education in Nigeria."
+      />
 
       {/* Mission, Vision, Values */}
       <section className="py-20">
@@ -102,43 +106,42 @@ export default function AboutUsPage() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                Our Story
+                Our Heritage & Legacy
               </h2>
               <div className="space-y-6 text-gray-600">
                 <p className="text-lg leading-relaxed">
-                  Founded in 2009 by Dr. Sarah Adebayo, a renowned homeopathic physician with over 25 years of international experience, our school began with a simple yet powerful vision: to bridge the gap between traditional healing wisdom and modern healthcare practices in Nigeria.
+                  Founded in 1982 by Dr. Effiong Udo Umoren, the father of homeopathy in Nigeria, our institution began as the Cottage Homoeopathic Medical College and Hospital with a mission to provide comprehensive education in classical and modern homeopathy.
                 </p>
                 <p className="leading-relaxed">
-                  What started as a small training center with 12 students has grown into Nigeria's premier institution for alternative medicine education. Today, we have graduated over 500 practitioners who are making a significant impact in healthcare across Nigeria and beyond.
+                  Dr. Umoren was the first practitioner of homeopathic medicine in Nigeria, starting his practice in 1940. He established the first Association of Nigerian Homeopathic and Natural Therapeutics in 1965, laying the foundation for organized homeopathic practice in the country.
                 </p>
                 <p className="leading-relaxed">
-                  Our integrated approach combines rigorous academic training with hands-on clinical experience, ensuring our graduates are not only knowledgeable but also practical and compassionate healthcare providers.
+                  Today, we continue his legacy as the Modern College of Homoeopathy/Alternative Medicine (MOCHAM), producing eminent practitioners who serve communities across Nigeria and neighboring countries.
                 </p>
               </div>
               
               <div className="mt-8 grid grid-cols-2 gap-6">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-medical-blue">2009</div>
+                  <div className="text-3xl font-bold text-medical-blue">1982</div>
                   <div className="text-gray-600">Founded</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-healing-green">500+</div>
-                  <div className="text-gray-600">Graduates</div>
+                  <div className="text-3xl font-bold text-healing-green">40+</div>
+                  <div className="text-gray-600">Years of Excellence</div>
                 </div>
               </div>
             </div>
 
             <div className="relative">
               <div className="bg-white rounded-2xl shadow-xl p-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">Key Milestones</h3>
                 <div className="space-y-6">
                   <div className="flex items-start space-x-4">
                     <div className="w-12 h-12 bg-medical-blue rounded-lg flex items-center justify-center flex-shrink-0">
                       <Calendar className="h-6 w-6 text-white" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-lg mb-1">2009</h4>
-                      <p className="text-gray-600">School founded with first cohort of 12 students</p>
+                      <h4 className="font-semibold text-lg mb-1">1982</h4>
+                      <p className="text-gray-600">Cottage Homoeopathic Medical College and Hospital established</p>
                     </div>
                   </div>
                   
@@ -147,8 +150,8 @@ export default function AboutUsPage() {
                       <Award className="h-6 w-6 text-white" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-lg mb-1">2012</h4>
-                      <p className="text-gray-600">Received NUC accreditation for medical degree program</p>
+                      <h4 className="font-semibold text-lg mb-1">2007</h4>
+                      <p className="text-gray-600">Curriculum modernization and international recognition</p>
                     </div>
                   </div>
                   
@@ -157,8 +160,8 @@ export default function AboutUsPage() {
                       <Heart className="h-6 w-6 text-white" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-lg mb-1">2015</h4>
-                      <p className="text-gray-600">Integrated clinic opened, serving 10,000+ patients</p>
+                      <h4 className="font-semibold text-lg mb-1">1965</h4>
+                      <p className="text-gray-600">First Nigerian Homeopathic Association founded</p>
                     </div>
                   </div>
                   
@@ -167,8 +170,8 @@ export default function AboutUsPage() {
                       <GraduationCap className="h-6 w-6 text-white" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-lg mb-1">2020</h4>
-                      <p className="text-gray-600">First international accreditation and partnerships</p>
+                      <h4 className="font-semibold text-lg mb-1">1940</h4>
+                      <p className="text-gray-600">Dr. Umoren began first homeopathic practice in Nigeria</p>
                     </div>
                   </div>
                 </div>
@@ -178,28 +181,49 @@ export default function AboutUsPage() {
         </div>
       </section>
 
-      {/* Leadership Team */}
+      {/* Founder & Legacy */}
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Our Leadership Team
+              Our Founder & Legacy
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Meet the experienced professionals who guide our institution and shape the future of alternative medicine education in Nigeria.
+              Honoring the visionary who established homeopathic medicine in Nigeria and the institution that continues his legacy.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <Card className="border-0 shadow-lg">
               <CardContent className="p-8 text-center">
+                <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-6 flex items-center justify-center overflow-hidden">
+                  <img 
+                    src="/dre2.png" 
+                    alt="Dr. Effiong Udo Umoren" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Dr. Effiong Udo Umoren</h3>
+                <p className="text-medical-blue font-semibold mb-4">Founder & Father of Homeopathy in Nigeria</p>
+                <p className="text-gray-600 text-sm">
+                  Born 1901, first practitioner of homeopathic medicine in Nigeria (1940), established the first Nigerian Homeopathic Association in 1965, founded MOCHAM in 1982.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-0 shadow-lg">
+              <CardContent className="p-8 text-center">
                 <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-6 flex items-center justify-center">
-                  <Users className="h-12 w-12 text-gray-400" />
+                  <img 
+                    src="/handshake.png" 
+                    alt="Dr. Sarah Adebayo" 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Dr. Sarah Adebayo</h3>
-                <p className="text-medical-blue font-semibold mb-4">Founder & President</p>
+                <p className="text-healing-green font-semibold mb-4">Chief Medical Officer</p>
                 <p className="text-gray-600 text-sm">
-                  MD, Homeopathy (Germany), with 25+ years of international experience in alternative medicine and healthcare education.
+                  MD, Homeopathy (Germany), with 25+ years of international experience in alternative medicine practice and education.
                 </p>
               </CardContent>
             </Card>
@@ -207,25 +231,16 @@ export default function AboutUsPage() {
             <Card className="border-0 shadow-lg">
               <CardContent className="p-8 text-center">
                 <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-6 flex items-center justify-center">
-                  <GraduationCap className="h-12 w-12 text-gray-400" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Prof. Michael Okonkwo</h3>
-                <p className="text-healing-green font-semibold mb-4">Academic Director</p>
-                <p className="text-gray-600 text-sm">
-                  PhD in Naturopathy, former Dean of Medicine at University of Lagos, with expertise in integrative medicine.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-0 shadow-lg">
-              <CardContent className="p-8 text-center">
-                <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-6 flex items-center justify-center">
-                  <Heart className="h-12 w-12 text-gray-400" />
+                  <img 
+                    src="/dr.png" 
+                    alt="Dr. Fatima Ibrahim" 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Dr. Fatima Ibrahim</h3>
-                <p className="text-calming-teal font-semibold mb-4">Clinic Director</p>
+                <p className="text-calming-teal font-semibold mb-4">Herbal Medicine Specialist</p>
                 <p className="text-gray-600 text-sm">
-                  MD, Homeopathy (India), with 15+ years of clinical practice and patient care experience.
+                  MD, Herbal Medicine (India), with expertise in traditional Nigerian herbs and their therapeutic applications.
                 </p>
               </CardContent>
             </Card>
@@ -233,62 +248,7 @@ export default function AboutUsPage() {
         </div>
       </section>
 
-      {/* Accreditation & Recognition */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Accreditation & Recognition
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Our commitment to excellence is recognized by national and international bodies.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="w-20 h-20 bg-medical-blue rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Award className="h-10 w-10 text-white" />
-              </div>
-              <h3 className="font-semibold text-lg mb-2">NUC Accredited</h3>
-              <p className="text-gray-600 text-sm">
-                Recognized by the National Universities Commission for our medical degree program.
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-20 h-20 bg-healing-green rounded-lg flex items-center justify-center mx-auto mb-4">
-                <CheckCircle className="h-10 w-10 text-white" />
-              </div>
-              <h3 className="font-semibold text-lg mb-2">Professional Bodies</h3>
-              <p className="text-gray-600 text-sm">
-                Member of Nigerian Homeopathic Medical Association and other professional bodies.
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-20 h-20 bg-calming-teal rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Users className="h-10 w-10 text-white" />
-              </div>
-              <h3 className="font-semibold text-lg mb-2">International Partners</h3>
-              <p className="text-gray-600 text-sm">
-                Partnerships with leading international institutions in alternative medicine.
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-20 h-20 bg-warm-orange rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Heart className="h-10 w-10 text-white" />
-              </div>
-              <h3 className="font-semibold text-lg mb-2">Quality Assurance</h3>
-              <p className="text-gray-600 text-sm">
-                Regular quality assessments and continuous improvement programs.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
+      
       {/* Campus & Facilities */}
       <section className="py-20">
         <div className="container mx-auto px-4">
@@ -298,54 +258,54 @@ export default function AboutUsPage() {
                 Our Campus & Facilities
               </h2>
               <p className="text-xl text-gray-600 mb-8">
-                Located in the heart of Lagos, our modern campus provides an ideal environment for learning and clinical practice.
+                Located in the quiet, secluded part of Uyo, Akwa Ibom State, our campus provides an ideal environment for learning and clinical practice.
               </p>
               
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
                   <div className="w-12 h-12 bg-medical-blue rounded-lg flex items-center justify-center flex-shrink-0">
-                    <GraduationCap className="h-6 w-6 text-white" />
+                    <Microscope className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg mb-2">Modern Classrooms</h3>
+                    <h3 className="font-semibold text-lg mb-2">Research Laboratories</h3>
                     <p className="text-gray-600">
-                      State-of-the-art lecture halls equipped with the latest technology for interactive learning.
+                      Well-equipped anatomy, physiology, pathology, pharmacy, physics, and chemistry laboratories for practical training.
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start space-x-4">
                   <div className="w-12 h-12 bg-healing-green rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Heart className="h-6 w-6 text-white" />
+                    <BookOpen className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg mb-2">Integrated Clinic</h3>
+                    <h3 className="font-semibold text-lg mb-2">Museums & Educational Resources</h3>
                     <p className="text-gray-600">
-                      Fully equipped clinic serving the community while providing hands-on training for students.
+                      Museums of Anatomy, Pathology, and Pharmacology with modern charts and specimens for demonstration.
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start space-x-4">
                   <div className="w-12 h-12 bg-calming-teal rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Users className="h-6 w-6 text-white" />
+                    <Stethoscope className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg mb-2">Library & Research Center</h3>
+                    <h3 className="font-semibold text-lg mb-2">Teaching Hospital</h3>
                     <p className="text-gray-600">
-                      Comprehensive collection of medical texts, journals, and digital resources for research.
+                      Integrated clinic serving the community while providing hands-on clinical training for students.
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start space-x-4">
                   <div className="w-12 h-12 bg-warm-orange rounded-lg flex items-center justify-center flex-shrink-0">
-                    <MapPin className="h-6 w-6 text-white" />
+                    <Users className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg mb-2">Herbal Garden</h3>
+                    <h3 className="font-semibold text-lg mb-2">Research Center</h3>
                     <p className="text-gray-600">
-                      Living laboratory featuring indigenous and exotic medicinal plants for practical study.
+                      Dedicated research facility for advancing homeopathic and alternative medicine knowledge.
                     </p>
                   </div>
                 </div>
@@ -358,17 +318,20 @@ export default function AboutUsPage() {
                 <div className="flex items-center space-x-3">
                   <MapPin className="h-5 w-5 text-gray-400" />
                   <div>
-                    <p className="font-medium">123 Medical Drive</p>
-                    <p className="text-gray-600">Lagos State, Nigeria 100001</p>
+                    <p className="font-medium">No.1 Uwa Street, Uyo</p>
+                    <p className="text-gray-600">Opposite Ministry of Education, Akwa Ibom State</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
                   <Phone className="h-5 w-5 text-gray-400" />
-                  <p className="text-gray-600">+234-xxx-xxx-xxxx</p>
+                  <div>
+                    <p className="text-gray-600">08037935596</p>
+                    <p className="text-gray-600">07088418182</p>
+                  </div>
                 </div>
                 <div className="flex items-center space-x-3">
                   <Calendar className="h-5 w-5 text-gray-400" />
-                  <p className="text-gray-600">Monday - Friday: 8:00 AM - 6:00 PM</p>
+                  <p className="text-gray-600">Previous appointment essential (minimum 48hrs notice)</p>
                 </div>
               </div>
               <div className="mt-6">
@@ -382,31 +345,7 @@ export default function AboutUsPage() {
           </div>
         </div>
       </section>
-
-      {/* Call to Action */}
-      <section className="py-20 bg-healing-green text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Ready to Join Our Community?
-          </h2>
-          <p className="text-xl mb-8 text-green-100 max-w-2xl mx-auto">
-            Become part of Nigeria's leading alternative medicine education institution and make a difference in healthcare.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/admissions">
-              <Button size="xl" className="bg-white text-healing-green hover:bg-gray-100 font-semibold">
-                Apply for Admission
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-            <Link href="/contact-us">
-              <Button size="xl" variant="outline" className="border-white text-white hover:bg-white hover:text-healing-green font-semibold">
-                Contact Us
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
+ 
     </MainLayout>
   )
 }

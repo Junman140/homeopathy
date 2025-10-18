@@ -19,6 +19,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { academicProgramsHistoryData, historicalDocumentsData } from "@/lib/history-data"
 import { HistoricalCarousel } from "@/components/historical-carousel"
+import PublicationsCarousel from "@/components/publications-carousel"
 
 // Types for our data
 interface Program {
@@ -116,7 +117,7 @@ export default async function HomePage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image 
-            src="/tippi-mackenzie-homepage-banner-updated.jpg" 
+            src="/tippi-mackenzie-homepage-banner-updated.jpeg" 
             alt="Medical professional with patient - advancing healthcare through research and education"
             fill
             priority
@@ -138,13 +139,17 @@ export default async function HomePage() {
                   To care for the future, we must safeguard research and education in alternative medicine.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8">
+                  <Link href="/about-us">
                   <Button size="lg" variant="medical" className="font-semibold w-full sm:w-auto">
                     Learn How
                     <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                   </Button>
+                  </Link>
+                  <Link href="/research"> 
                   <Button size="lg" variant="outline" className="font-semibold w-full sm:w-auto">
                     Explore Our Research
                   </Button>
+                  </Link>
                 </div>
                 
                 {/* Trust Indicators */}
@@ -196,68 +201,19 @@ export default async function HomePage() {
       </section>
 
       {/* What We're Talking About - Research Section */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-gray-50 dark:bg-gray-800">
+      <section className="py-12 sm:py-16 lg:py-20 bg-gray-900">
         <div className="container mx-auto px-4">
-           <div className="text-center sm:mb-12 lg:mb-16 max-w-6xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-ucsf-blue dark:text-blue-400 mb-3 sm:mb-4">
-              What We're Talking About
-            </h2>
-            <p className="text-base sm:text-lg lg:text-xl text-dim-blue-600 dark:text-gray-300 mb-10 sm:mb-12 lg:mb-16">
-              Explore our latest research publications and groundbreaking studies in alternative medicine.
-            </p>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-              {publications.slice(0, 3).map((publication) => {
-                const getIcon = (type: string) => {
-                  switch (type) {
-                    case 'journal': return <BookOpen className="h-16 w-16 text-white" />
-                    case 'conference': return <Users className="h-16 w-16 text-white" />
-                    case 'study': return <Heart className="h-16 w-16 text-white" />
-                    default: return <BookOpen className="h-16 w-16 text-white" />
-                  }
-                }
-                
-                const getGradient = (type: string) => {
-                  switch (type) {
-                    case 'journal': return 'bg-gradient-to-br from-ucsf-blue to-blue-600'
-                    case 'conference': return 'bg-gradient-to-br from-accent-orange to-orange-600'
-                    case 'study': return 'bg-gradient-to-br from-medical-green to-green-600'
-                    default: return 'bg-gradient-to-br from-ucsf-blue to-blue-600'
-                  }
-                }
-                
-                return (
-                  <Link key={publication.id} href={`/research/${publication.slug}`}>
-                    <Card className="clean-card hover:shadow-lg transition-all duration-300 overflow-hidden max-w-sm mx-auto sm:max-w-none cursor-pointer group hover:scale-105">
-                      <div className={`w-full h-36 sm:h-40 lg:h-48 ${getGradient(publication.type)} flex items-center justify-center transition-all duration-300 group-hover:scale-110`}>
-                        {getIcon(publication.type)}
-                      </div>
-                      <CardContent className="p-3 sm:p-4 lg:p-6">
-                        <div className="flex items-center justify-between mb-1.5 sm:mb-2">
-                          <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                            {publication.type.charAt(0).toUpperCase() + publication.type.slice(1)} • {publication.year}
-                            {publication.journal && ` • ${publication.journal}`}
-                          </div>
-                          <ArrowRight className="h-4 w-4 text-gray-400 group-hover:text-blue-600 transition-colors" />
-                        </div>
-                        <h3 className="text-sm sm:text-base lg:text-lg font-bold text-dim-blue-800 dark:text-gray-100 mb-2 sm:mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors">
-                          {publication.title}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-dim-blue-600 dark:text-gray-300 line-clamp-2 mb-2">
-                          {publication.description}
-                        </p>
-                        {publication.authors && publication.authors.length > 0 && (
-                          <div className="text-xs text-gray-500 dark:text-gray-400 italic">
-                            By: {publication.authors.slice(0, 2).join(', ')}
-                            {publication.authors.length > 2 && ' et al.'}
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
-                  </Link>
-                )
-              })}
+           <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-10 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3 sm:mb-4">
+                What We're Talking About
+              </h2>
+              <p className="text-base sm:text-lg lg:text-xl text-gray-300 mb-10 sm:mb-12">
+                Explore our latest research publications and groundbreaking studies in alternative medicine.
+              </p>
             </div>
+
+            <PublicationsCarousel publications={publications} />
 
             <div className="text-center mt-10 sm:mt-12">
               <Link href="/research">
@@ -370,233 +326,123 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Programs Overview */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-gray-50 dark:bg-gray-800">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-10 sm:mb-12 lg:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-dim-blue-800 dark:text-gray-100 mb-3 sm:mb-4">
-              Our Academic Programs
-            </h2>
-            <p className="text-base sm:text-lg lg:text-xl text-dim-blue-600 dark:text-gray-300 max-w-3xl mx-auto px-4">
-              Choose from our comprehensive range of alternative medicine programs designed to prepare you for a successful career in healthcare.
-            </p>
-          </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {programs.map((program) => {
-              const getIcon = (iconName: string) => {
-                switch (iconName) {
-                  case 'GraduationCap': return <GraduationCap className="h-8 w-8 text-white" />
-                  case 'Stethoscope': return <Stethoscope className="h-8 w-8 text-white" />
-                  case 'BookOpen': return <BookOpen className="h-8 w-8 text-white" />
-                  default: return <GraduationCap className="h-8 w-8 text-white" />
-                }
-              }
-              
-              const getBgColor = (type: string) => {
-                switch (type) {
-                  case 'degree': return 'bg-ucsf-blue'
-                  case 'diploma': return 'bg-medical-green'
-                  case 'certificate': return 'bg-ucsf-blue'
-                  default: return 'bg-ucsf-blue'
-                }
-              }
-              
-              const getButtonVariant = (type: string) => {
-                switch (type) {
-                  case 'degree': return 'medical'
-                  case 'diploma': return 'healing'
-                  case 'certificate': return 'outline'
-                  default: return 'medical'
-                }
-              }
-              
-              return (
-                <Card key={program.id} className="clean-card hover:shadow-lg transition-shadow h-full flex flex-col max-w-sm mx-auto sm:max-w-none">
-                  <CardContent className="p-4 sm:p-6 lg:p-8 flex-1 flex flex-col">
-                    <div className={`w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 ${getBgColor(program.type)} rounded-lg flex items-center justify-center mb-3 sm:mb-4 lg:mb-6 mx-auto sm:mx-0`}>
-                      {getIcon(program.icon)}
-                    </div>
-                    <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-dim-blue-800 dark:text-gray-100 mb-2 sm:mb-3 lg:mb-4 text-center sm:text-left">
-                      {program.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm lg:text-base text-dim-blue-600 dark:text-gray-300 mb-3 sm:mb-4 lg:mb-6 flex-1 text-center sm:text-left">
-                      {program.description}
-                    </p>
-                    <div className="space-y-1.5 sm:space-y-2 mb-3 sm:mb-4 lg:mb-6">
-                      {program.features.map((feature, index) => (
-                        <div key={index} className="flex items-start text-xs sm:text-sm text-dim-blue-600 dark:text-gray-400">
-                          <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 dark:text-green-400 mr-1.5 sm:mr-2 flex-shrink-0 mt-0.5" />
-                          <span>{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <Link href={`/programs/${program.slug}`} className="w-full">
-                      <Button variant={getButtonVariant(program.type) as any} className="w-full text-xs sm:text-sm">
-                        Learn More
-                      </Button>
-                    </Link>
-                  </CardContent>
-                </Card>
-              )
-            })}
-          </div>
+
+      {/* Why Choose Us - Premium Design */}
+      <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+            backgroundSize: '40px 40px'
+          }}></div>
         </div>
-      </section>
 
-      {/* Clinic Services */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-gray-50 dark:bg-gray-800">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 items-start">
-            <div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-dim-blue-800 dark:text-gray-100 mb-4 sm:mb-6">
-                Integrated Clinic Services
-              </h2>
-              <p className="text-base sm:text-lg lg:text-xl text-dim-blue-600 dark:text-gray-300 mb-6 sm:mb-8">
-                Our on-campus clinic serves as both a community healthcare facility and a hands-on training environment for our students.
-              </p>
-              
-              <div className="space-y-4 sm:space-y-6">
-                {services.slice(0, 3).map((service) => {
-                  const getIcon = (iconName: string) => {
-                    switch (iconName) {
-                      case 'Heart': return <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-                      case 'Stethoscope': return <Stethoscope className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-                      case 'Users': return <Users className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-                      default: return <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-                    }
-                  }
-                  
-                  const getBgColor = (category: string) => {
-                    switch (category) {
-                      case 'homeopathy': return 'bg-medical-green'
-                      case 'integrative': return 'bg-ucsf-blue'
-                      case 'herbal': return 'bg-accent-orange'
-                      default: return 'bg-medical-green'
-                    }
-                  }
-                  
-                  return (
-                    <div key={service.id} className="flex flex-col items-center text-center sm:flex-row sm:items-start sm:text-left space-y-3 sm:space-y-0 sm:space-x-4">
-                      <div className={`w-10 h-10 sm:w-12 sm:h-12 ${getBgColor(service.category)} rounded-lg flex items-center justify-center flex-shrink-0 mx-auto sm:mx-0`}>
-                        {getIcon(service.icon)}
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-base sm:text-lg text-dim-blue-800 dark:text-gray-100 mb-1 sm:mb-2">{service.name}</h3>
-                        <p className="text-sm sm:text-base text-dim-blue-600 dark:text-gray-300">
-                          {service.description}
-                        </p>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-
-              <div className="mt-6 sm:mt-8">
-                <Link href="/contact-us">
-                  <Button size="lg" variant="medical" className="w-full sm:w-auto">
-                    View All Services
-                    <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-
-            <div className="relative">
-              <div className="bg-white dark:bg-card rounded-2xl shadow-xl p-6 sm:p-8">
-                <h3 className="text-xl sm:text-2xl font-bold text-dim-blue-800 dark:text-gray-100 mb-4 sm:mb-6">Book Your Appointment</h3>
-                <div className="space-y-3 sm:space-y-4">
-                  {services.map((service, index) => (
-                    <div key={service.id} className={`flex items-center justify-between py-2 sm:py-3 ${index < services.length - 1 ? 'border-b dark:border-gray-700' : ''}`}>
-                      <span className="font-medium text-sm sm:text-base text-dim-blue-800 dark:text-gray-100">{service.name}</span>
-                      <span className="text-medical-green dark:text-green-400 font-semibold text-sm sm:text-base">₦{service.price.toLocaleString()}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-4 sm:mt-6">
-                  <Link href="/contact-us">
-                    <Button size="lg" variant="healing" className="w-full">
-                      Schedule Appointment
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Why Choose Us */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-white dark:bg-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-10 sm:mb-12 lg:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-dim-blue-800 dark:text-gray-100 mb-3 sm:mb-4">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
               Why Choose Our School?
             </h2>
-            <p className="text-base sm:text-lg lg:text-xl text-dim-blue-600 dark:text-gray-300 max-w-3xl mx-auto px-4">
-              We provide exceptional education and training that prepares you for a successful career in alternative medicine.
+            <p className="text-lg sm:text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto">
+              Excellence in alternative medicine education since 1982
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            <div className="text-center p-4">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-ucsf-blue rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                <Award className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-bold text-dim-blue-800 dark:text-gray-100 mb-3 sm:mb-4">Accredited Programs</h3>
-              <p className="text-sm sm:text-base text-dim-blue-600 dark:text-gray-300">
-                Our programs are recognized by the National Universities Commission and professional bodies.
-              </p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
+            {/* Accredited Programs */}
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-ucsf-blue/20 to-blue-600/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all"></div>
+              <Card className="relative bg-gray-800/50 border-gray-700 backdrop-blur-sm hover:bg-gray-800/70 transition-all duration-300 h-full">
+                <CardContent className="p-6 sm:p-8 text-center">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-ucsf-blue to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-500/50 group-hover:scale-110 transition-transform">
+                    <Award className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">Accredited Programs</h3>
+                  <p className="text-sm sm:text-base text-gray-300 leading-relaxed">
+                    Our programs are recognized by the National Universities Commission and professional bodies.
+                  </p>
+                </CardContent>
+              </Card>
             </div>
 
-            <div className="text-center p-4">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-medical-green rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                <Users className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-bold text-dim-blue-800 dark:text-gray-100 mb-3 sm:mb-4">Expert Faculty</h3>
-              <p className="text-sm sm:text-base text-dim-blue-600 dark:text-gray-300">
-                Learn from experienced practitioners with international training and decades of clinical experience.
-              </p>
+            {/* Expert Faculty */}
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-medical-green/20 to-green-600/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all"></div>
+              <Card className="relative bg-gray-800/50 border-gray-700 backdrop-blur-sm hover:bg-gray-800/70 transition-all duration-300 h-full">
+                <CardContent className="p-6 sm:p-8 text-center">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-medical-green to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-500/50 group-hover:scale-110 transition-transform">
+                    <Users className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">Expert Faculty</h3>
+                  <p className="text-sm sm:text-base text-gray-300 leading-relaxed">
+                    Learn from experienced practitioners with international training and decades of clinical experience.
+                  </p>
+                </CardContent>
+              </Card>
             </div>
 
-            <div className="text-center p-4">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-accent-orange rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                <Stethoscope className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-bold text-dim-blue-800 dark:text-gray-100 mb-3 sm:mb-4">Hands-on Training</h3>
-              <p className="text-sm sm:text-base text-dim-blue-600 dark:text-gray-300">
-                Gain practical experience in our on-campus clinic with real patients and real-world scenarios.
-              </p>
+            {/* Hands-on Training */}
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-accent-orange/20 to-orange-600/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all"></div>
+              <Card className="relative bg-gray-800/50 border-gray-700 backdrop-blur-sm hover:bg-gray-800/70 transition-all duration-300 h-full">
+                <CardContent className="p-6 sm:p-8 text-center">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-accent-orange to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-orange-500/50 group-hover:scale-110 transition-transform">
+                    <Stethoscope className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">Hands-on Training</h3>
+                  <p className="text-sm sm:text-base text-gray-300 leading-relaxed">
+                    Gain practical experience in our on-campus clinic with real patients and real-world scenarios.
+                  </p>
+                </CardContent>
+              </Card>
             </div>
 
-            <div className="text-center p-4">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-ucsf-blue rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                <Heart className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-bold text-dim-blue-800 dark:text-gray-100 mb-3 sm:mb-4">Community Impact</h3>
-              <p className="text-sm sm:text-base text-dim-blue-600 dark:text-gray-300">
-                Make a difference in your community by providing affordable, quality healthcare services.
-              </p>
+            {/* Community Impact */}
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all"></div>
+              <Card className="relative bg-gray-800/50 border-gray-700 backdrop-blur-sm hover:bg-gray-800/70 transition-all duration-300 h-full">
+                <CardContent className="p-6 sm:p-8 text-center">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-purple-500/50 group-hover:scale-110 transition-transform">
+                    <Heart className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">Community Impact</h3>
+                  <p className="text-sm sm:text-base text-gray-300 leading-relaxed">
+                    Make a difference in your community by providing affordable, quality healthcare services.
+                  </p>
+                </CardContent>
+              </Card>
             </div>
 
-            <div className="text-center p-4">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-medical-green rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                <BookOpen className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-bold text-dim-blue-800 dark:text-gray-100 mb-3 sm:mb-4">Comprehensive Curriculum</h3>
-              <p className="text-sm sm:text-base text-dim-blue-600 dark:text-gray-300">
-                Well-rounded education covering both traditional and modern approaches to healthcare.
-              </p>
+            {/* Comprehensive Curriculum */}
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-teal-500/20 to-teal-600/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all"></div>
+              <Card className="relative bg-gray-800/50 border-gray-700 backdrop-blur-sm hover:bg-gray-800/70 transition-all duration-300 h-full">
+                <CardContent className="p-6 sm:p-8 text-center">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-teal-500/50 group-hover:scale-110 transition-transform">
+                    <BookOpen className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">Comprehensive Curriculum</h3>
+                  <p className="text-sm sm:text-base text-gray-300 leading-relaxed">
+                    Well-rounded education covering both traditional and modern approaches to healthcare.
+                  </p>
+                </CardContent>
+              </Card>
             </div>
 
-            <div className="text-center p-4">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-accent-orange rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                <Star className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
-              </div>
-              <h3 className="text-lg sm:text-xl font-bold text-dim-blue-800 dark:text-gray-100 mb-3 sm:mb-4">Career Support</h3>
-              <p className="text-sm sm:text-base text-dim-blue-600 dark:text-gray-300">
-                Strong alumni network and career placement services to help you succeed after graduation.
-              </p>
+            {/* Career Support */}
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-yellow-600/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all"></div>
+              <Card className="relative bg-gray-800/50 border-gray-700 backdrop-blur-sm hover:bg-gray-800/70 transition-all duration-300 h-full">
+                <CardContent className="p-6 sm:p-8 text-center">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-yellow-500/50 group-hover:scale-110 transition-transform">
+                    <Star className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">Career Support</h3>
+                  <p className="text-sm sm:text-base text-gray-300 leading-relaxed">
+                    Strong alumni network and career placement services to help you succeed after graduation.
+                  </p>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>

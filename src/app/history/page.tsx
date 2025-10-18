@@ -123,7 +123,8 @@ async function getHistoryEvents(): Promise<HistoryEvent[]> {
 
 async function getAchievements(): Promise<Achievement[]> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/achievements`, {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+    const res = await fetch(`${baseUrl}/api/achievements`, {
       cache: 'no-store'
     })
     if (!res.ok) throw new Error('Failed to fetch achievements')
@@ -136,7 +137,7 @@ async function getAchievements(): Promise<Achievement[]> {
 
 async function getFounderInfo(): Promise<FounderInfo[]> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL }/api/founder-info`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/founder-info`, {
       cache: 'no-store'
     })
     if (!res.ok) throw new Error('Failed to fetch founder info')
@@ -242,62 +243,54 @@ export default async function HistoryPage() {
 
   return (
     <MainLayout>
-      {/* Hero Section - 50% smaller */}
-      <section className="relative h-[250px] overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-ucsf-blue to-blue-800"></div>
+      {/* Hero Section with Image Carousel Background */}
+      <section className="relative h-[400px] md:h-[500px] overflow-hidden">
+        {/* Background Image Carousel */}
+        <div className="absolute inset-0">
+          <div className="relative w-full h-full">
+            {historicalDocuments.slice(0, 6).map((doc, index) => (
+              <div
+                key={doc.id}
+                className="absolute inset-0 transition-opacity duration-1000"
+                style={{
+                  opacity: index === 0 ? 1 : 0,
+                  animation: `fadeInOut ${historicalDocuments.slice(0, 6).length * 5}s ease-in-out ${index * 5}s infinite`
+                }}
+              >
+                {doc.fileUrl && (
+                  <Image
+                    src={doc.fileUrl}
+                    alt={doc.title}
+                    fill
+                    className="object-cover"
+                    priority={index === 0}
+                    sizes="100vw"
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+          {/* Overlay gradient */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70"></div>
+        </div>
+
+        {/* Hero Content */}
         <div className="relative h-full flex items-center">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center text-white">
-              <h1 className="text-2xl md:text-4xl font-bold mb-4">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 drop-shadow-lg">
                 Our History
               </h1>
-              <p className="text-lg md:text-xl text-blue-100 leading-relaxed">
-                Nigeria's first and foremost homeopathic medicine institution - A legacy of excellence spanning over 40 years.
+              <p className="text-lg md:text-2xl text-blue-100 leading-relaxed drop-shadow-md mb-6">
+                Nigeria's first and foremost homeopathic medicine institution
+              </p>
+              <p className="text-md md:text-lg text-white/90 drop-shadow-md">
+                A legacy of excellence spanning over 40 years
               </p>
             </div>
           </div>
         </div>
-      </section>
 
-      {/* Quick Timeline Section - 50% smaller */}
-      <section className="py-10">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-dim-blue-800 dark:text-gray-100 mb-3">
-              Our Journey Through the Years
-            </h2>
-            <p className="text-lg text-dim-blue-600 dark:text-gray-300 max-w-2xl mx-auto">
-              From humble beginnings to becoming Nigeria's leading alternative medicine institution.
-            </p>
-          </div>
-
-          <div className="max-w-2xl mx-auto">
-            <div className="space-y-6">
-              {historyEvents.slice(0, 4).map((event, index) => {
-                const getBgColor = (color: string) => {
-                  switch (color) {
-                    case 'ucsf-blue': return 'bg-ucsf-blue'
-                    case 'medical-green': return 'bg-medical-green'
-                    case 'accent-orange': return 'bg-accent-orange'
-                    default: return 'bg-ucsf-blue'
-                  }
-                }
-                
-                return (
-                  <div key={event.id} className="flex items-center space-x-4">
-                    <div className={`w-12 h-12 ${getBgColor(event.color)} rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0`}>
-                        {event.year}
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-dim-blue-800 dark:text-gray-100">{event.title}</h3>
-                      <p className="text-sm text-dim-blue-600 dark:text-gray-400">{event.description}</p>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-        </div>
       </section>
 
       {/* Wikipedia-Style Comprehensive History */}
@@ -325,24 +318,48 @@ export default async function HistoryPage() {
             <Card className="mb-8" id="founder">
               <CardContent className="p-8">
                 <div className="flex items-start space-x-6">
-                  <div className="w-32 h-32 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <User className="h-16 w-16 text-gray-400" />
-                    <span className="text-xs text-gray-500 absolute bottom-2">Portrait Placeholder</span>
+                  <div className="w-32 h-32 rounded-lg flex items-center justify-center flex-shrink-0 relative overflow-hidden bg-gray-200 dark:bg-gray-700">
+                    <Image
+                      src="/dre2.png"
+                      alt={founder ? founder.name : "Dr. Effiong Udo Umoren"}
+                      fill
+                      className="object-cover"
+                      sizes="128px"
+                    />
                   </div>
                   <div className="flex-1">
-                    <h2 className="text-3xl font-bold text-dim-blue-800 dark:text-gray-100 mb-4">Dr. Effiong Udo Umoren</h2>
-                    <p className="text-lg text-dim-blue-600 dark:text-gray-300 mb-4">Founder and Father of Homeopathy in Nigeria (1901-2002)</p>
-                    {founder && (
-                      <div className="space-y-3">
-                        <p className="text-dim-blue-600 dark:text-gray-300">
-                          Born on December 18, 1901, in Ikot Akpan, Ikot-Eyo in Ubium clan, Dr. E. U. Umoren was the visionary founder who established the first homeopathic medicine institution in Nigeria.
+                    {founder ? (
+                      <>
+                        <h2 className="text-3xl font-bold text-dim-blue-800 dark:text-gray-100 mb-4">{founder.name}</h2>
+                        <p className="text-lg text-dim-blue-600 dark:text-gray-300 mb-4">
+                          {founder.title} ({new Date(founder.birthDate).getFullYear()}-{new Date(founder.deathDate).getFullYear()})
                         </p>
-                        <p className="text-dim-blue-600 dark:text-gray-300">
-                          With extensive international education including degrees in Naturopathy, Biochemistry, Homeopathic Medicine, and Philosophy, Dr. Umoren became the first practitioner of homeopathic medicine in Nigeria in 1940.
-                        </p>
-                        <p className="text-dim-blue-600 dark:text-gray-300">
-                          He founded the first Association of Nigerian Homeopathic and natural therapeutics in 1965 and established the Cottage Homoeopathic Medical College and Hospital in 1982, which later became the Modern College of Homoeopathy/Alternative Medicine.
-                        </p>
+                        <div className="space-y-3">
+                          <p className="text-dim-blue-600 dark:text-gray-300">
+                            Born on December 18, 1901, in {founder.biography.earlyLife?.birthPlace || 'Ikot Akpan, Ikot-Eyo in Ubium clan'}, Dr. E. U. Umoren was the visionary founder who established the first homeopathic medicine institution in Nigeria.
+                          </p>
+                          <p className="text-dim-blue-600 dark:text-gray-300">
+                            With extensive international education including degrees in Naturopathy, Biochemistry, Homeopathic Medicine, and Philosophy, Dr. Umoren became the first practitioner of homeopathic medicine in Nigeria in 1940.
+                          </p>
+                          <p className="text-dim-blue-600 dark:text-gray-300">
+                            He founded the first Association of Nigerian Homeopathic and natural therapeutics in 1965 and established the Cottage Homoeopathic Medical College and Hospital in 1982, which later became the Modern College of Homoeopathy/Alternative Medicine.
+                          </p>
+                          {founder.biography.achievements && founder.biography.achievements.length > 0 && (
+                            <div className="mt-4">
+                              <h4 className="font-semibold text-dim-blue-800 dark:text-gray-100 mb-2">Key Achievements:</h4>
+                              <ul className="list-disc list-inside space-y-1">
+                                {founder.biography.achievements.slice(0, 3).map((achievement: string, index: number) => (
+                                  <li key={index} className="text-sm text-dim-blue-600 dark:text-gray-300">{achievement}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="text-center py-8">
+                        <p className="text-red-600 dark:text-red-400 font-semibold">No founder information found in database</p>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm mt-2">Please check if founder data has been seeded</p>
                       </div>
                     )}
                   </div>
@@ -483,21 +500,53 @@ export default async function HistoryPage() {
             <Card className="mb-8" id="legacy">
               <CardContent className="p-8">
                 <h2 className="text-3xl font-bold text-dim-blue-800 dark:text-gray-100 mb-6">Legacy & Achievements</h2>
-                <div className="grid md:grid-cols-2 gap-6">
-                  {legacyAchievements.filter(a => a.isFeatured).map((achievement) => (
-                    <div key={achievement.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                      <div className="flex items-center mb-3">
-                        <Award className="h-6 w-6 text-ucsf-blue mr-2" />
-                        <h3 className="text-lg font-semibold text-dim-blue-800 dark:text-gray-100">{achievement.title}</h3>
-                      </div>
-                      <p className="text-dim-blue-600 dark:text-gray-300 mb-2">{achievement.description}</p>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-500">{achievement.category}</span>
-                        {achievement.year && <span className="text-sm font-medium text-ucsf-blue">{achievement.year}</span>}
-                      </div>
+                
+                {/* Founder Achievements */}
+                {achievements.length > 0 && (
+                  <div className="mb-8">
+                    <h3 className="text-2xl font-semibold text-dim-blue-800 dark:text-gray-100 mb-4 flex items-center">
+                      <Award className="h-6 w-6 text-medical-green mr-2" />
+                      Founder's Achievements
+                    </h3>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {achievements.map((achievement) => (
+                        <div key={achievement.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow">
+                          <div className="flex items-start space-x-3">
+                            <span className="text-2xl">{achievement.icon}</span>
+                            <div className="flex-1">
+                              <h4 className="font-semibold text-dim-blue-800 dark:text-gray-100 mb-2">{achievement.title}</h4>
+                              <p className="text-sm text-dim-blue-600 dark:text-gray-300">{achievement.description}</p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  </div>
+                )}
+
+                {/* Legacy Achievements */}
+                {legacyAchievements.filter(a => a.isFeatured).length > 0 && (
+                  <div>
+                    <h3 className="text-2xl font-semibold text-dim-blue-800 dark:text-gray-100 mb-4">
+                      Institutional Achievements
+                    </h3>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      {legacyAchievements.filter(a => a.isFeatured).map((achievement) => (
+                        <div key={achievement.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+                          <div className="flex items-center mb-3">
+                            <Award className="h-6 w-6 text-ucsf-blue mr-2" />
+                            <h3 className="text-lg font-semibold text-dim-blue-800 dark:text-gray-100">{achievement.title}</h3>
+                          </div>
+                          <p className="text-dim-blue-600 dark:text-gray-300 mb-2">{achievement.description}</p>
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm text-gray-500">{achievement.category}</span>
+                            {achievement.year && <span className="text-sm font-medium text-ucsf-blue">{achievement.year}</span>}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
 

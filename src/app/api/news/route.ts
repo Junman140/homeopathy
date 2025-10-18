@@ -4,13 +4,8 @@ import { prisma } from '@/lib/prisma'
 export async function GET() {
   try {
     const news = await prisma.news.findMany({
-      where: {
-        isPublished: true
-      },
-      orderBy: {
-        publishedAt: 'desc'
-      },
-      take: 6 // Limit to 6 most recent articles
+      where: { isPublished: true },
+      orderBy: { publishedAt: 'desc' }
     })
 
     return NextResponse.json(news)
