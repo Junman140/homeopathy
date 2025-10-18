@@ -24,7 +24,7 @@ export default function PortalDashboard() {
     } else {
       setStudent(session)
       // Fetch student data when session is available
-      fetchStudentData(session.id)
+      fetchStudentData(session.studentId)
     }
     setLoading(false)
   }, [router])

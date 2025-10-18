@@ -350,7 +350,7 @@ export default function ModelForm({ modelName, recordId, initialData }: ModelFor
   }
 
   const handleChange = (key: string, value: any) => {
-    setFormData(prev => ({
+    setFormData((prev: any) => ({
       ...prev,
       [key]: value
     }))
@@ -396,7 +396,7 @@ export default function ModelForm({ modelName, recordId, initialData }: ModelFor
                 className="admin-form-group select"
               >
                 <option value="">Select {field.label}</option>
-                {field.options?.map((option) => (
+                {field.options?.map((option: any) => (
                   <option key={option} value={option}>
                     {option.charAt(0).toUpperCase() + option.slice(1)}
                   </option>

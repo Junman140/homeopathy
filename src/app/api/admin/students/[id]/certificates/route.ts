@@ -3,10 +3,11 @@ import { prisma } from '@/lib/prisma'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const studentId = params.id
+    const resolvedParams = await params
+    const studentId = resolvedParams.id
     
     // Get certificates for a specific student
     const certificates = await prisma.studentCertificate.findMany({
@@ -27,10 +28,11 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const studentId = params.id
+    const resolvedParams = await params
+    const studentId = resolvedParams.id
     const body = await request.json()
     
     // Create a new certificate for the student

@@ -1,15 +1,16 @@
 import ModelForm from '@/components/admin/model-form'
 
 interface NewRecordPageProps {
-  params: {
+  params: Promise<{
     model: string
-  }
+  }>
 }
 
-export default function NewRecordPage({ params }: NewRecordPageProps) {
+export default async function NewRecordPage({ params }: NewRecordPageProps) {
+  const resolvedParams = await params
   return (
     <div className="admin-form-container">
-      <ModelForm modelName={params.model} />
+      <ModelForm modelName={resolvedParams.model} />
     </div>
   )
 }
