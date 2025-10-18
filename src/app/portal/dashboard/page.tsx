@@ -14,6 +14,7 @@ export default function PortalDashboard() {
   const [certificates, setCertificates] = useState<any[]>([])
   const [schedules, setSchedules] = useState<any[]>([])
   const [courses, setCourses] = useState<any[]>([])
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -68,6 +69,10 @@ export default function PortalDashboard() {
     router.push('/portal')
   }
 
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen)
+  }
+
   if (loading) {
     return (
       <div className="portal-dashboard">
@@ -97,6 +102,13 @@ export default function PortalDashboard() {
       <header className="portal-dashboard-header">
         <div className="portal-dashboard-nav">
           <div className="portal-dashboard-logo">
+            <button 
+              className="portal-mobile-menu-toggle"
+              onClick={toggleSidebar}
+              aria-label="Toggle menu"
+            >
+              ☰
+            </button>
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
               <circle cx="16" cy="16" r="14" fill="#10b981" stroke="white" strokeWidth="2"/>
               <path d="M10 16l4 4 8-8" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -121,13 +133,16 @@ export default function PortalDashboard() {
 
       <div className="portal-dashboard-content">
         {/* Sidebar */}
-        <aside className="portal-dashboard-sidebar">
+        <aside className={`portal-dashboard-sidebar ${sidebarOpen ? 'open' : ''}`}>
           <nav className="portal-dashboard-nav-menu">
             {menuItems.map((item) => (
               <button
                 key={item.id}
                 className={`portal-nav-item ${activeTab === item.id ? 'active' : ''}`}
-                onClick={() => setActiveTab(item.id)}
+                onClick={() => {
+                  setActiveTab(item.id)
+                  setSidebarOpen(false) // Close sidebar on mobile after selection
+                }}
               >
                 <span className="portal-nav-icon">{item.icon}</span>
                 <span className="portal-nav-label">{item.label}</span>
@@ -215,7 +230,6 @@ export default function PortalDashboard() {
                           <div className="portal-progress-bar">
                             <div 
                               className={`portal-course-progress-fill-${progressPercentage}`}
-                              style={{ width: `${progressPercentage}%` }}
                             ></div>
                           </div>
                           <span>{progressPercentage}% Complete</span>
