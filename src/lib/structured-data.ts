@@ -74,11 +74,15 @@ export interface LocalBusinessSchema {
     latitude?: string
     longitude?: string
   }
-  openingHoursSpecification: {
+  openingHoursSpecification: Array<{
     '@type': string
     dayOfWeek: string[]
     opens: string
     closes: string
+  }>
+  areaServed?: {
+    '@type': string
+    name: string
   }
 }
 
