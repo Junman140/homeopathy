@@ -21,8 +21,21 @@ import {
 import Link from "next/link"
 
 export const metadata = {
-  title: "About Us | MOCHAM - Modern College of Homoeopathy/Alternative Medicine",
-  description: "Learn about MOCHAM's mission, vision, and commitment to excellence in alternative medicine education. Discover our heritage, values, and the legacy of Dr. Effiong Udo Umoren, founder of Nigeria's first homeopathic institution.",
+  title: "About MOCHAM | Homeopathy School History & Mission | Uyo Nigeria",
+  description: "Learn about MOCHAM - Nigeria's first homeopathy school since 1982. Discover our mission, vision, founder Dr. Effiong Udo Umoren, and our commitment to excellence in alternative medicine education in Uyo, Akwa Ibom State.",
+  keywords: [
+    'MOCHAM history',
+    'homeopathy school Nigeria',
+    'alternative medicine institution',
+    'medical college Uyo',
+    'Dr. Effiong Udo Umoren',
+    'homeopathy education Nigeria'
+  ],
+  openGraph: {
+    title: 'About MOCHAM - Nigeria\'s Premier Homeopathy School Since 1982',
+    description: 'Learn about MOCHAM\'s mission, vision, and commitment to excellence in alternative medicine education. Discover our heritage in Uyo, Akwa Ibom State.',
+    url: 'https://www.mocham.org/about-us',
+  }
 }
 
 export default function AboutUsPage() {

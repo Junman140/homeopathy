@@ -6,23 +6,32 @@ import { ThemeProvider } from "@/components/theme-provider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://medicalhomeopathyschool.edu.ng'),
+  metadataBase: new URL('https://www.mocham.org'),
   title: {
-    default: 'MOCHAM | First and Best Medical & Homeopathy School Nigeria',
-    template: '%s | Medical & Homeopathy School Nigeria'
+    default: 'MOCHAM | Homeopathy School Nigeria | Alternative Medicine Uyo',
+    template: '%s | MOCHAM - Modern College of Homeopathy and Alternative Medicine'
   },
-  description: 'Leading medical and homeopathy school in Nigeria offering comprehensive alternative medicine education with integrated clinic services. Accredited programs, expert faculty, and hands-on clinical training.',
+  description: 'MOCHAM - Nigeria\'s leading homeopathy school since 1982. Offering comprehensive alternative medicine education, accredited programs, and expert clinical training in Uyo, Akwa Ibom State.',
   keywords: [
-    'medical school Nigeria',
-    'homeopathy education',
-    'alternative medicine school',
-    'medical clinic Nigeria',
-    'holistic medicine training',
-    'naturopathy school'
+    'MOCHAM',
+    'homeopathy school Nigeria',
+    'alternative medicine Nigeria',
+    'medical college Uyo',
+    'homeopathy education Nigeria',
+    'homeopathy diploma Nigeria',
+    'alternative medicine training',
+    'holistic medicine school Nigeria',
+    'naturopathy school Nigeria',
+    'traditional medicine education',
+    'homeopathy school Uyo',
+    'medical school Akwa Ibom',
+    'alternative medicine Uyo Nigeria',
+    'medical clinic Uyo',
+    'homoeopathic medicine training'
   ],
-  authors: [{ name: 'Medical & Homeopathy School Nigeria' }],
-  creator: 'Medical & Homeopathy School Nigeria',
-  publisher: 'Medical & Homeopathy School Nigeria',
+  authors: [{ name: 'MOCHAM - Modern College of Homeopathy and Alternative Medicine' }],
+  creator: 'MOCHAM',
+  publisher: 'MOCHAM',
   formatDetection: {
     email: false,
     address: false,
@@ -56,16 +65,24 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_NG',
-    url: 'https://medicalhomeopathyschool.edu.ng',
-    title: 'Medical & Homeopathy School Nigeria',
-    description: 'Premier alternative medicine education with integrated clinic services',
-    siteName: 'Medical & Homeopathy School Nigeria',
+    url: 'https://www.mocham.org',
+    title: 'MOCHAM - Modern College of Homeopathy and Alternative Medicine',
+    description: 'Nigeria\'s leading homeopathy and alternative medicine school since 1982. Accredited programs, expert faculty, and hands-on clinical training in Uyo, Akwa Ibom State.',
+    siteName: 'MOCHAM',
+    images: [
+      {
+        url: 'https://www.mocham.org/logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'MOCHAM - Modern College of Homeopathy and Alternative Medicine'
+      }
+    ]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Medical & Homeopathy School Nigeria',
-    description: 'Premier alternative medicine education with integrated clinic services',
-    creator: '@MedHomeoSchoolNG',
+    title: 'MOCHAM - Modern College of Homeopathy and Alternative Medicine',
+    description: 'Nigeria\'s leading homeopathy and alternative medicine school since 1982. Accredited programs in Uyo, Akwa Ibom State.',
+    creator: '@MOCHAMNigeria',
   },
   robots: {
     index: true,

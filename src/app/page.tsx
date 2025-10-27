@@ -17,9 +17,16 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import { Metadata } from "next"
 import { academicProgramsHistoryData, historicalDocumentsData } from "@/lib/history-data"
 import { HistoricalCarousel } from "@/components/historical-carousel"
 import PublicationsCarousel from "@/components/publications-carousel"
+import { StructuredDataWrapper } from "@/components/seo/structured-data-wrapper"
+import { 
+  generateOrganizationSchema, 
+  generateWebSiteSchema, 
+  generateEducationalOrganizationSchema 
+} from "@/lib/structured-data"
 
 // Types for our data
 interface Program {
@@ -104,21 +111,49 @@ async function getServices(): Promise<Service[]> {
   }
 }
 
+export const metadata: Metadata = {
+  title: 'MOCHAM - Homeopathy School Nigeria | Alternative Medicine Education',
+  description: 'Nigeria\'s leading homeopathy school MOCHAM offers comprehensive alternative medicine education in Uyo since 1982. Accredited programs in homoeopathy, holistic medicine, and naturopathy.',
+  keywords: [
+    'MOCHAM',
+    'homeopathy school Nigeria',
+    'alternative medicine education',
+    'homeopathy training Uyo',
+    'homoeopathic medicine school',
+    'holistic medicine Nigeria',
+    'medical education Akwa Ibom'
+  ],
+  openGraph: {
+    title: 'MOCHAM - Nigeria\'s Premier Homeopathy School Since 1982',
+    description: 'Comprehensive homeopathy and alternative medicine education in Nigeria. Accredited programs, expert faculty, hands-on clinical training in Uyo, Akwa Ibom State.',
+    url: 'https://www.mocham.org',
+  }
+}
+
 export default async function HomePage() {
   const [programs, publications, services] = await Promise.all([
     getPrograms(),
     getPublications(),
     getServices()
   ])
+  
+  // Structured data for SEO
+  const structuredData = [
+    generateOrganizationSchema(),
+    generateWebSiteSchema(),
+    generateEducationalOrganizationSchema()
+  ]
+  
   return (
-    <MainLayout>
+    <StructuredDataWrapper data={structuredData}>
+      <MainLayout>
       {/* Hero Section */}
       <section className="relative h-[500px] sm:h-[600px] lg:h-[700px] overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image 
             src="/tippi-mackenzie-homepage-banner-updated.jpg" 
-            alt="Medical professional with patient - advancing healthcare through research and education"
+            alt="MOCHAM homeopathy medical education - alternative medicine training in Nigeria, medical professional teaching natural healing methods"
             fill
             priority
             className="object-cover object-center"
@@ -454,7 +489,7 @@ export default async function HomePage() {
         <div className="absolute inset-0">
           <Image 
             src="/aerial.jpg" 
-            alt="Aerial view of our campus - spanning decades of medical education excellence"
+            alt="MOCHAM campus Uyo Nigeria - aerial view of homeopathy school campus, alternative medicine education facility in Akwa Ibom State"
             fill
             className="object-cover object-center"
             sizes="100vw"
@@ -594,6 +629,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-    </MainLayout>
+      </MainLayout>
+    </StructuredDataWrapper>
   )
 }

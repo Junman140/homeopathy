@@ -45,8 +45,22 @@ async function getPrograms(): Promise<Program[]> {
 }
 
 export const metadata = {
-  title: "Education | Medical & Homeopathy School Nigeria",
-  description: "Explore our comprehensive alternative medicine education programs. From medical degrees to specialized diplomas, prepare for a career in integrative healthcare.",
+  title: "Education Programs | Homeopathy Training Nigeria | MOCHAM Courses",
+  description: "Explore MOCHAM's comprehensive alternative medicine education programs. Homeopathy diplomas, medical degrees, and specialized courses in Uyo, Nigeria. Accredited programs since 1982.",
+  keywords: [
+    'homeopathy diploma Nigeria',
+    'alternative medicine training',
+    'medical courses Uyo',
+    'homeopathy education programs',
+    'holistic medicine courses',
+    'homoeopathic training Nigeria',
+    'MOCHAM programs'
+  ],
+  openGraph: {
+    title: 'MOCHAM Education Programs - Homeopathy & Alternative Medicine Training',
+    description: 'Comprehensive homeopathy and alternative medicine education programs in Nigeria. Accredited courses, expert faculty, hands-on clinical training in Uyo.',
+    url: 'https://www.mocham.org/education',
+  }
 }
 
 export default async function EducationPage() {
