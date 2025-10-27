@@ -3,6 +3,21 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { 
+  Home, 
+  User, 
+  BookOpen, 
+  BarChart3, 
+  Calendar, 
+  GraduationCap,
+  Menu,
+  LogOut,
+  Moon,
+  Sun,
+  Award,
+  FileText,
+  CheckCircle
+} from 'lucide-react'
 import { getPortalSession, clearPortalSession, type PortalStudent } from '@/lib/portal-session'
 
 export default function PortalDashboard() {
@@ -88,12 +103,12 @@ export default function PortalDashboard() {
   }
 
   const menuItems = [
-    { id: 'home', label: 'Home', icon: '🏠' },
-    { id: 'profile', label: 'Profile', icon: '👤' },
-    { id: 'courses', label: 'Courses', icon: '📚' },
-    { id: 'grades', label: 'Grades', icon: '📊' },
-    { id: 'schedule', label: 'Schedule', icon: '📅' },
-    { id: 'certificates', label: 'Certificates', icon: '🎓' }
+    { id: 'home', label: 'Home', icon: Home },
+    { id: 'profile', label: 'Profile', icon: User },
+    { id: 'courses', label: 'Courses', icon: BookOpen },
+    { id: 'grades', label: 'Grades', icon: BarChart3 },
+    { id: 'schedule', label: 'Schedule', icon: Calendar },
+    { id: 'certificates', label: 'Certificates', icon: GraduationCap }
   ]
 
   return (
@@ -107,7 +122,7 @@ export default function PortalDashboard() {
               onClick={toggleSidebar}
               aria-label="Toggle menu"
             >
-              ☰
+              <Menu className="w-6 h-6" />
             </button>
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
               <circle cx="16" cy="16" r="14" fill="#10b981" stroke="white" strokeWidth="2"/>
@@ -119,13 +134,15 @@ export default function PortalDashboard() {
           <div className="portal-dashboard-user">
             <span>Welcome, {student.firstName || student.name || 'Student'}</span>
             <button 
-              className="portal-dark-mode-toggle"
+              className="portal-dark-mode-toggle portal-icon-button"
               onClick={() => setDarkMode(!darkMode)}
+              title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
             >
-              {darkMode ? '☀️' : '🌙'} Dark Mode
+              {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
             <button onClick={handleLogout} className="portal-logout">
-              Logout
+              <LogOut className="w-4 h-4 mr-1" />
+              <span>Logout</span>
             </button>
           </div>
         </div>
@@ -135,19 +152,22 @@ export default function PortalDashboard() {
         {/* Sidebar */}
         <aside className={`portal-dashboard-sidebar ${sidebarOpen ? 'open' : ''}`}>
           <nav className="portal-dashboard-nav-menu">
-            {menuItems.map((item) => (
-              <button
-                key={item.id}
-                className={`portal-nav-item ${activeTab === item.id ? 'active' : ''}`}
-                onClick={() => {
-                  setActiveTab(item.id)
-                  setSidebarOpen(false) // Close sidebar on mobile after selection
-                }}
-              >
-                <span className="portal-nav-icon">{item.icon}</span>
-                <span className="portal-nav-label">{item.label}</span>
-              </button>
-            ))}
+            {menuItems.map((item) => {
+              const IconComponent = item.icon
+              return (
+                <button
+                  key={item.id}
+                  className={`portal-nav-item ${activeTab === item.id ? 'active' : ''}`}
+                  onClick={() => {
+                    setActiveTab(item.id)
+                    setSidebarOpen(false)
+                  }}
+                >
+                  <IconComponent className="w-5 h-5" />
+                  <span className="portal-nav-label">{item.label}</span>
+                </button>
+              )
+            })}
           </nav>
         </aside>
 
@@ -160,25 +180,37 @@ export default function PortalDashboard() {
               
               <div className="portal-quick-actions">
                 <div className="portal-action-card">
-                  <h3>📚 My Courses</h3>
+                  <h3>
+                    <BookOpen className="w-6 h-6 inline mr-2" />
+                    My Courses
+                  </h3>
                   <p>View your enrolled courses and academic progress</p>
                   <button onClick={() => setActiveTab('courses')}>View Courses</button>
                 </div>
                 
                 <div className="portal-action-card">
-                  <h3>📊 Grades & Results</h3>
+                  <h3>
+                    <BarChart3 className="w-6 h-6 inline mr-2" />
+                    Grades & Results
+                  </h3>
                   <p>Check your academic performance and grades</p>
                   <button onClick={() => setActiveTab('grades')}>View Grades</button>
                 </div>
                 
                 <div className="portal-action-card">
-                  <h3>📅 Class Schedule</h3>
+                  <h3>
+                    <Calendar className="w-6 h-6 inline mr-2" />
+                    Class Schedule
+                  </h3>
                   <p>View your upcoming classes and important dates</p>
                   <button onClick={() => setActiveTab('schedule')}>View Schedule</button>
                 </div>
                 
                 <div className="portal-action-card">
-                  <h3>🎓 My Certificates</h3>
+                  <h3>
+                    <GraduationCap className="w-6 h-6 inline mr-2" />
+                    My Certificates
+                  </h3>
                   <p>View your earned certificates and achievements</p>
                   <button onClick={() => setActiveTab('certificates')}>View Certificates</button>
                 </div>
@@ -315,28 +347,37 @@ export default function PortalDashboard() {
               <h1>My Certificates</h1>
               {certificates.length > 0 ? (
                 <div className="portal-certificates-list">
-                  {certificates.map((certificate, index) => (
-                    <div key={index} className="portal-certificate-item">
-                      <h3>
-                        {certificate.certificateType === 'degree' && '🎓 '}
-                        {certificate.certificateType === 'diploma' && '📜 '}
-                        {certificate.certificateType === 'certificate' && '🏆 '}
-                        {certificate.certificateType === 'transcript' && '📄 '}
-                        {certificate.certificateType === 'completion' && '✅ '}
-                        {certificate.title}
-                      </h3>
-                      <p>Type: {certificate.certificateType}</p>
-                      <p>Issued: {new Date(certificate.issueDate).toLocaleDateString()}</p>
-                      {certificate.expiryDate && (
-                        <p>Expires: {new Date(certificate.expiryDate).toLocaleDateString()}</p>
-                      )}
-                      {certificate.description && <p>{certificate.description}</p>}
-                      <p>Status: {certificate.isActive ? 'Active' : 'Inactive'}</p>
-                      <button onClick={() => window.open(certificate.fileUrl, '_blank')}>
-                        Download Certificate
-                      </button>
-                    </div>
-                  ))}
+                  {certificates.map((certificate, index) => {
+                    const getIcon = () => {
+                      switch (certificate.certificateType) {
+                        case 'degree': return <GraduationCap className="w-6 h-6" />
+                        case 'diploma': return <FileText className="w-6 h-6" />
+                        case 'certificate': return <Award className="w-6 h-6" />
+                        case 'transcript': return <FileText className="w-6 h-6" />
+                        case 'completion': return <CheckCircle className="w-6 h-6" />
+                        default: return <Award className="w-6 h-6" />
+                      }
+                    }
+                    
+                    return (
+                      <div key={index} className="portal-certificate-item">
+                        <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          {getIcon()}
+                          {certificate.title}
+                        </h3>
+                        <p>Type: {certificate.certificateType}</p>
+                        <p>Issued: {new Date(certificate.issueDate).toLocaleDateString()}</p>
+                        {certificate.expiryDate && (
+                          <p>Expires: {new Date(certificate.expiryDate).toLocaleDateString()}</p>
+                        )}
+                        {certificate.description && <p>{certificate.description}</p>}
+                        <p>Status: {certificate.isActive ? 'Active' : 'Inactive'}</p>
+                        <button onClick={() => window.open(certificate.fileUrl, '_blank')}>
+                          Download Certificate
+                        </button>
+                      </div>
+                    )
+                  })}
                 </div>
               ) : (
                 <div className="portal-no-data">

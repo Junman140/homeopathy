@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import PortalAuthModal from '@/components/portal-auth-modal'
 
 export default function PortalLanding() {
@@ -23,6 +23,13 @@ export default function PortalLanding() {
     }
   ]
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length)
+    }, 3000)
+    return () => clearInterval(timer)
+  }, [slides.length])
+
   return (
     <div className="portal-landing">
       <div className="portal-content">
@@ -35,7 +42,7 @@ export default function PortalLanding() {
             </svg>
           </div>
           <div>
-            <h1 className="portal-title">UNDERGRADUATE PORTAL</h1>
+            <h1 className="portal-title">Student Portal</h1>
             <p className="portal-subtitle">MOCHAM</p>
           </div>
         </header>
@@ -74,31 +81,12 @@ export default function PortalLanding() {
           <div className="portal-contact">
             <div>© UNDERGRADUATE PORTAL 2025 All right reserved</div>
             <div>
-              <a href="mailto:portal@mocham.edu">portal@mocham.edu</a> | 
-              <a href="tel:+2348023635890"> +2348023635890</a>
+              <a href="mailto:Mochams1@yahoo.com">Mochams1@yahoo.com</a> | 
+              <a href="tel:+234-803-793-5596"> +234-803-793-5596</a>
             </div>
             <div>
-              <a href="tel:+23481-552-12097">+23481-552-12097</a> | 
-              <a href="tel:+234806-598-4572">+234806-598-4572</a> | 
-              <a href="tel:+234802-2269-656">+234802-2269-656</a>
+              <a href="tel:+234-803-793-5596">+234-803-793-5596</a> 
             </div>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <div style={{ 
-              width: '20px', 
-              height: '20px', 
-              background: '#10b981', 
-              borderRadius: '4px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'white',
-              fontWeight: 'bold',
-              fontSize: '12px'
-            }}>
-              M
-            </div>
-            <span>MOCHAM</span>
           </div>
         </footer>
       </div>
