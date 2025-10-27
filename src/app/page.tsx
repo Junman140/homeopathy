@@ -117,7 +117,7 @@ export default async function HomePage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image 
-            src="/tippi-mackenzie-homepage-banner-updated.jpeg" 
+            src="/tippi-mackenzie-homepage-banner-updated.jpg" 
             alt="Medical professional with patient - advancing healthcare through research and education"
             fill
             priority
