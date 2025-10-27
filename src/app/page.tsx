@@ -25,7 +25,8 @@ import { StructuredDataWrapper } from "@/components/seo/structured-data-wrapper"
 import { 
   generateOrganizationSchema, 
   generateWebSiteSchema, 
-  generateEducationalOrganizationSchema 
+  generateEducationalOrganizationSchema,
+  generateLocalBusinessSchema
 } from "@/lib/structured-data"
 
 // Types for our data
@@ -141,7 +142,8 @@ export default async function HomePage() {
   const structuredData = [
     generateOrganizationSchema(),
     generateWebSiteSchema(),
-    generateEducationalOrganizationSchema()
+    generateEducationalOrganizationSchema(),
+    generateLocalBusinessSchema()
   ]
   
   return (

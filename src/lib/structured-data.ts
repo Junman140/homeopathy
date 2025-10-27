@@ -174,7 +174,7 @@ export const generateEducationalOrganizationSchema = (): EducationalOrganization
 export const generateLocalBusinessSchema = (): LocalBusinessSchema => ({
   '@context': 'https://schema.org',
   '@type': 'MedicalBusiness',
-  name: 'MOCHAM Medical Clinic',
+  name: 'MOCHAM - Modern College of Homeopathy and Alternative Medicine',
   image: 'https://www.mocham.org/clinic.jpg',
   '@id': 'https://www.mocham.org',
   url: 'https://www.mocham.org',
@@ -185,22 +185,31 @@ export const generateLocalBusinessSchema = (): LocalBusinessSchema => ({
     streetAddress: '11 Homoeopathic Crescent by 152 Aka Road, Adjacent to Ukana Offot Street',
     addressLocality: 'Uyo',
     addressRegion: 'Akwa Ibom State',
+    postalCode: '520221',
     addressCountry: 'NG'
   },
   geo: {
-    '@type': 'GeoCoordinates'
+    '@type': 'GeoCoordinates',
+    latitude: '5.0521',
+    longitude: '7.9333'
   },
-  openingHoursSpecification: {
-    '@type': 'OpeningHoursSpecification',
-    dayOfWeek: [
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday'
-    ],
-    opens: '08:00',
-    closes: '17:00'
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '08:00',
+      closes: '17:00'
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Saturday'],
+      opens: '09:00',
+      closes: '14:00'
+    }
+  ],
+  areaServed: {
+    '@type': 'City',
+    name: 'Uyo, Akwa Ibom State'
   }
 })
 
